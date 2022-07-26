@@ -10,7 +10,7 @@ export function Navbar() {
             <h4 className="text-secondary">Plan Hero</h4>
           </Nav.Link>
         </Nav>
-        Hi,&nbsp;<b className="text-secondary">Username</b>
+        Hi,&nbsp;<b className="text-secondary">Yavuz</b>
       </Container>
     </NavbarBs>
   );
