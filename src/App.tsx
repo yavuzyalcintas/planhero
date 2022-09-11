@@ -4,9 +4,9 @@ import { NavbarMinimal } from "./components/common/Navbar";
 import { FooterSimple } from "./components/common/Footer";
 import { AppShell, MantineProvider } from "@mantine/core";
 import LoginPage from "./pages/LoginPage";
-import ProtectedRoutes from "./components/common/ProtectedRoutes";
 import ScrumPokerPage from "./pages/ScrumPokerPage";
 import AuthGuard from "./guards/AuthGuard";
+import RetroPage from "./pages/RetroPage";
 
 function App() {
   return (
@@ -66,6 +66,15 @@ function App() {
               element={
                 <AuthGuard>
                   <ScrumPokerPage />
+                </AuthGuard>
+              }
+            />
+
+            <Route
+              path="/retro"
+              element={
+                <AuthGuard>
+                  <RetroPage />
                 </AuthGuard>
               }
             />

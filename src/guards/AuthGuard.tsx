@@ -1,9 +1,5 @@
 import { useState, ReactNode } from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import { AuthenticationForm } from "../components/auth/AuthenticationForm";
-// hooks
-
-// pages
 import { useAuth } from "../utilities/authProvider";
 
 // ----------------------------------------------------------------------

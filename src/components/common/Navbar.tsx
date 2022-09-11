@@ -13,12 +13,11 @@ import {
   IconLogout,
   IconDeviceGamepad,
   IconMessages,
-  IconSunHigh,
-  IconSunOff,
 } from "@tabler/icons";
 import Logo from "./Logo";
 import { useAuth } from "../../utilities/authProvider";
 import { supabase } from "../../utilities/supabase";
+import { useNavigate } from "react-router-dom";
 
 const useStyles = createStyles((theme) => ({
   link: {
@@ -74,22 +73,26 @@ function NavbarLink({ icon: Icon, label, active, onClick }: NavbarLinkProps) {
   );
 }
 
-const mockdata = [
-  { icon: IconHome2, label: "Home" },
-  { icon: IconDeviceGamepad, label: "Scrum Poker" },
-  { icon: IconMessages, label: "Retrospective" },
+const menuItems = [
+  { icon: IconHome2, label: "Home", to: "/" },
+  { icon: IconDeviceGamepad, label: "Scrum Poker", to: "/scrum-poker" },
+  { icon: IconMessages, label: "Retrospective", to: "/retro" },
 ];
 
 export function NavbarMinimal() {
   const [active, setActive] = useState(0);
+  const navigate = useNavigate();
   const user = useAuth();
 
-  const links = mockdata.map((link, index) => (
+  const links = menuItems.map((link, index) => (
     <NavbarLink
       {...link}
       key={link.label}
       active={index === active}
-      onClick={() => setActive(index)}
+      onClick={() => {
+        setActive(index);
+        navigate(link.to);
+      }}
     />
   ));
 

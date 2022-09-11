@@ -22,17 +22,14 @@ function useProvideAuth() {
 
   useEffect(() => {
     const user = supabase.auth.user();
-    console.log("useProvideAuth", user);
     setUser(user);
 
     const auth = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_IN") {
-        console.log("SIGNED_IN");
         setUser(session?.user as User);
       }
 
       if (event === "SIGNED_OUT") {
-        console.log("SIGNED_OUT");
         setUser(null);
       }
     });
