@@ -4,8 +4,11 @@ import { User } from "@supabase/supabase-js";
 
 const authContext = createContext<User | null>(null);
 
-// @ts-ignore
-export const AuthProvider = ({ children }) => {
+interface AuthProviderProps {
+  children: React.ReactNode;
+}
+
+export const AuthProvider = ({ children }: AuthProviderProps) => {
   const auth = useProvideAuth();
   return <authContext.Provider value={auth}>{children}</authContext.Provider>;
 };

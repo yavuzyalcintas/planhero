@@ -14,8 +14,6 @@ import {
   Stack,
 } from "@mantine/core";
 import { GoogleButton } from "./SocialButtons";
-import { useAuth } from "../../utilities/authProvider";
-import React from "react";
 import { supabase } from "../../utilities/supabase";
 import { useNavigate } from "react-router-dom";
 
@@ -67,7 +65,7 @@ export function AuthenticationForm(props: PaperProps) {
   return (
     <Paper radius="md" p="xl" withBorder {...props}>
       <Text size="lg" weight={500}>
-        Welcome to Mantine, {type} with
+        Welcome to PlanHero, {type} with
       </Text>
 
       <Group grow mb="md" mt="md">
@@ -92,7 +90,7 @@ export function AuthenticationForm(props: PaperProps) {
           <TextInput
             required
             label="Email"
-            placeholder="hello@mantine.dev"
+            placeholder="hello@planhero.app"
             value={form.values.email}
             onChange={(event) =>
               form.setFieldValue("email", event.currentTarget.value)
@@ -129,7 +127,7 @@ export function AuthenticationForm(props: PaperProps) {
           <Anchor
             component="button"
             type="button"
-            color="dimmed"
+            color="yellow"
             onClick={() => toggle()}
             size="xs"
           >
