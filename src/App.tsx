@@ -1,17 +1,66 @@
 import { Routes, Route } from "react-router-dom";
-import { Container } from "react-bootstrap";
 import { Home } from "./pages/Home";
-import { Navbar } from "./components/Navbar";
+import { NavbarMinimal } from "./components/Navbar";
+import { FooterSimple } from "./components/Footer";
+import { AppShell, Container, MantineProvider } from "@mantine/core";
 
 function App() {
   return (
     <>
-      <Navbar></Navbar>
-      <Container className="mb-4">
-        <Routes>
-          <Route path="/" element={<Home />} />
-        </Routes>
-      </Container>
+      <MantineProvider
+        withGlobalStyles
+        withNormalizeCSS
+        theme={{
+          colorScheme: "dark",
+          colors: {
+            brand: [
+              "#F0BBDD",
+              "#ED9BCF",
+              "#EC7CC3",
+              "#ED5DB8",
+              "#F13EAF",
+              "#F71FA7",
+              "#FF00A1",
+              "#E00890",
+              "#C50E82",
+              "#AD1374",
+            ],
+            yellow: [
+              "#fffde7",
+              "#fff9c4",
+              "#fff59d",
+              "#fff176",
+              "#ffee58",
+              "#ffeb3b",
+              "#fdd835",
+              "#fbc02d",
+              "#f9a825",
+              "#f57f17",
+            ],
+          },
+          primaryColor: "yellow",
+        }}
+      >
+        <AppShell
+          padding="md"
+          navbar={<NavbarMinimal />}
+          styles={(theme) => ({
+            main: {
+              backgroundColor:
+                theme.colorScheme === "dark"
+                  ? theme.colors.dark[8]
+                  : theme.colors.gray[0],
+            },
+          })}
+          footer={<FooterSimple links={[{ link: "/", label: "Home" }]} />}
+        >
+          {/* Your application here */}
+
+          <Routes>
+            <Route path="/" element={<Home />} />
+          </Routes>
+        </AppShell>
+      </MantineProvider>
     </>
   );
 }
