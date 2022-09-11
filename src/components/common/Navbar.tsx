@@ -6,6 +6,7 @@ import {
   UnstyledButton,
   createStyles,
   Stack,
+  Text,
 } from "@mantine/core";
 import {
   TablerIcon,
@@ -21,8 +22,8 @@ import { useNavigate } from "react-router-dom";
 
 const useStyles = createStyles((theme) => ({
   link: {
-    width: 70,
-    height: 70,
+    width: 85,
+    height: 85,
     borderRadius: theme.radius.md,
     display: "flex",
     alignItems: "center",
@@ -103,7 +104,7 @@ export function NavbarMinimal() {
   return (
     <>
       {user && (
-        <Navbar style={{ position: "fixed" }} width={{ base: 100 }} p="md">
+        <Navbar style={{ position: "fixed" }} width={{ base: 120 }} p="md">
           <Center mt={25}>
             <Logo />
           </Center>
@@ -114,6 +115,18 @@ export function NavbarMinimal() {
           </Navbar.Section>
           <Navbar.Section>
             <Stack justify="center" spacing={0}>
+              Hi,{" "}
+              <Text
+                color="yellow"
+                size={16}
+                style={{
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                }}
+              >
+                <b>{user.email?.split("@")[0]}</b>
+              </Text>
               <NavbarLink icon={IconLogout} label="Logout" onClick={logout} />
             </Stack>
           </Navbar.Section>

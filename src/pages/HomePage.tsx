@@ -1,4 +1,5 @@
 import { Text } from "@mantine/core";
+import PageHeader from "../components/common/PageHeader";
 import { HeroTitle } from "../components/HeroTitle";
 import { useAuth } from "../utilities/authProvider";
 
@@ -7,16 +8,13 @@ export function HomePage() {
 
   return (
     <>
-      {user && (
-        <Text align="right">
-          Hi,{" "}
-          <Text color="yellow">
-            <b>{user.email?.split("@")[0]}</b>
-          </Text>
-        </Text>
+      {user ? (
+        <>
+          <PageHeader text="Recent Activities" />
+        </>
+      ) : (
+        <HeroTitle />
       )}
-
-      <HeroTitle />
     </>
   );
 }

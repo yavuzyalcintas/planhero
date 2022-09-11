@@ -1,4 +1,5 @@
-import { createStyles, Container, Group, Anchor } from "@mantine/core";
+import { createStyles, Container, Group, Anchor, Button } from "@mantine/core";
+import { GithubIcon } from "@mantine/ds";
 import Logo from "./Logo";
 
 const useStyles = createStyles((theme) => ({
@@ -50,7 +51,18 @@ export function FooterSimple({ links }: FooterSimpleProps) {
     <div className={classes.footer}>
       <Container className={classes.inner}>
         <Logo />
-        <Group className={classes.links}>{items}</Group>
+        <Group className={classes.links}>
+          {items}
+          <Button
+            component="a"
+            href="https://github.com/yavuzyalcintas/planhero"
+            variant="default"
+            target="_blank"
+            leftIcon={<GithubIcon size={20} />}
+          >
+            GitHub
+          </Button>
+        </Group>
       </Container>
     </div>
   );

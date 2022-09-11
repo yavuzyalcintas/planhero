@@ -1,12 +1,11 @@
 import ScrumPoker from "../components/ScrumPoker";
-import { IconDeviceGamepad } from "@tabler/icons";
+
+import PageHeader from "../components/common/PageHeader";
 
 const ScrumPokerPage: React.FC = () => {
   return (
     <>
-      <h1>
-        <IconDeviceGamepad color="yellow" /> Scrum Poker
-      </h1>
+      <PageHeader text="Scrum Poker" />
       <ScrumPoker />
     </>
   );

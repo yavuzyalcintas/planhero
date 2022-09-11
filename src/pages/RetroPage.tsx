@@ -1,12 +1,9 @@
-import { IconMessage } from "@tabler/icons";
+import PageHeader from "../components/common/PageHeader";
 
 const RetroPage: React.FC = () => {
   return (
     <>
-      <h1>
-        <IconMessage />
-        Retrospective Page
-      </h1>
+      <PageHeader text="Retrospective" />
     </>
   );
 };

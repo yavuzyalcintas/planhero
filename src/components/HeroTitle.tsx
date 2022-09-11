@@ -98,8 +98,7 @@ export function HeroTitle() {
           <Button
             size="xl"
             className={classes.control}
-            variant="gradient"
-            gradient={{ from: "yellow", to: "cyan" }}
+            color="yellow"
             onClick={() => navigate("/scrum-poker")}
           >
             Get started
