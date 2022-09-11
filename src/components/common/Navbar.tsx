@@ -18,6 +18,7 @@ import {
 } from "@tabler/icons";
 import Logo from "./Logo";
 import { useAuth } from "../../utilities/authProvider";
+import { supabase } from "../../utilities/supabase";
 
 const useStyles = createStyles((theme) => ({
   link: {
@@ -92,6 +93,10 @@ export function NavbarMinimal() {
     />
   ));
 
+  const logout = async () => {
+    supabase.auth.signOut();
+  };
+
   return (
     <>
       {user && (
@@ -106,8 +111,7 @@ export function NavbarMinimal() {
           </Navbar.Section>
           <Navbar.Section>
             <Stack justify="center" spacing={0}>
-              <NavbarLink icon={IconSunOff} label="Light Mode" />
-              <NavbarLink icon={IconLogout} label="Logout" />
+              <NavbarLink icon={IconLogout} label="Logout" onClick={logout} />
             </Stack>
           </Navbar.Section>
         </Navbar>

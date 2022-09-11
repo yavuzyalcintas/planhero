@@ -3,12 +3,15 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./utilities/authProvider";
+import { NotificationsProvider } from "@mantine/notifications";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <AuthProvider>
       <BrowserRouter>
-        <App />
+        <NotificationsProvider>
+          <App />
+        </NotificationsProvider>
       </BrowserRouter>
     </AuthProvider>
   </React.StrictMode>

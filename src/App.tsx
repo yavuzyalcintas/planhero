@@ -6,6 +6,7 @@ import { AppShell, MantineProvider } from "@mantine/core";
 import LoginPage from "./pages/LoginPage";
 import ProtectedRoutes from "./components/common/ProtectedRoutes";
 import ScrumPokerPage from "./pages/ScrumPokerPage";
+import AuthGuard from "./guards/AuthGuard";
 
 function App() {
   return (
@@ -60,9 +61,14 @@ function App() {
           {/* Your application here */}
 
           <Routes>
-            <Route path="/" element={<ProtectedRoutes />}>
-              <Route path="/scrum-poker" element={<ScrumPokerPage />} />
-            </Route>
+            <Route
+              path="/scrum-poker"
+              element={
+                <AuthGuard>
+                  <ScrumPokerPage />
+                </AuthGuard>
+              }
+            />
 
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
