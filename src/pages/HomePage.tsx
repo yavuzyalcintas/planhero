@@ -1,9 +1,9 @@
 import ScrumPoker from "../components/ScrumPoker";
 
-export function Home() {
+export function HomePage() {
   return (
     <>
-      <ScrumPoker />
+      <h1>Public Welcome Page</h1>
     </>
   );
 }

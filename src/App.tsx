@@ -1,8 +1,11 @@
 import { Routes, Route } from "react-router-dom";
-import { Home } from "./pages/Home";
-import { NavbarMinimal } from "./components/Navbar";
-import { FooterSimple } from "./components/Footer";
-import { AppShell, Container, MantineProvider } from "@mantine/core";
+import { HomePage } from "./pages/HomePage";
+import { NavbarMinimal } from "./components/common/Navbar";
+import { FooterSimple } from "./components/common/Footer";
+import { AppShell, MantineProvider } from "@mantine/core";
+import LoginPage from "./pages/LoginPage";
+import ProtectedRoutes from "./components/common/ProtectedRoutes";
+import ScrumPokerPage from "./pages/ScrumPokerPage";
 
 function App() {
   return (
@@ -57,7 +60,12 @@ function App() {
           {/* Your application here */}
 
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<ProtectedRoutes />}>
+              <Route path="/scrum-poker" element={<ScrumPokerPage />} />
+            </Route>
+
+            <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<LoginPage />} />
           </Routes>
         </AppShell>
       </MantineProvider>

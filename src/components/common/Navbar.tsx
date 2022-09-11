@@ -11,18 +11,18 @@ import {
   TablerIcon,
   IconHome2,
   IconLogout,
-  IconSwitchHorizontal,
   IconDeviceGamepad,
   IconMessages,
   IconSunHigh,
   IconSunOff,
 } from "@tabler/icons";
 import Logo from "./Logo";
+import { useAuth } from "../../utilities/authProvider";
 
 const useStyles = createStyles((theme) => ({
   link: {
-    width: 50,
-    height: 50,
+    width: 70,
+    height: 70,
     borderRadius: theme.radius.md,
     display: "flex",
     alignItems: "center",
@@ -81,6 +81,7 @@ const mockdata = [
 
 export function NavbarMinimal() {
   const [active, setActive] = useState(0);
+  const user = useAuth();
 
   const links = mockdata.map((link, index) => (
     <NavbarLink
@@ -92,21 +93,25 @@ export function NavbarMinimal() {
   ));
 
   return (
-    <Navbar style={{ position: "fixed" }} width={{ base: 80 }} p="md">
-      <Center>
-        <Logo />
-      </Center>
-      <Navbar.Section grow mt={50}>
-        <Stack justify="center" spacing={0}>
-          {links}
-        </Stack>
-      </Navbar.Section>
-      <Navbar.Section>
-        <Stack justify="center" spacing={0}>
-          <NavbarLink icon={IconSunOff} label="Light Mode" />
-          <NavbarLink icon={IconLogout} label="Logout" />
-        </Stack>
-      </Navbar.Section>
-    </Navbar>
+    <>
+      {user && (
+        <Navbar style={{ position: "fixed" }} width={{ base: 100 }} p="md">
+          <Center mt={25}>
+            <Logo />
+          </Center>
+          <Navbar.Section grow mt={70}>
+            <Stack justify="center" spacing={0}>
+              {links}
+            </Stack>
+          </Navbar.Section>
+          <Navbar.Section>
+            <Stack justify="center" spacing={0}>
+              <NavbarLink icon={IconSunOff} label="Light Mode" />
+              <NavbarLink icon={IconLogout} label="Logout" />
+            </Stack>
+          </Navbar.Section>
+        </Navbar>
+      )}
+    </>
   );
 }
