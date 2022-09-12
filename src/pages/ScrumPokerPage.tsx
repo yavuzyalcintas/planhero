@@ -1,6 +1,5 @@
-import ScrumPoker from "../components/ScrumPoker";
-
 import PageHeader from "../components/common/PageHeader";
+import ScrumPoker from "../components/scrum-poker/ScrumPoker";
 
 const ScrumPokerPage: React.FC = () => {
   return (

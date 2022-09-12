@@ -16,7 +16,6 @@ import {
 import { GoogleButton } from "./SocialButtons";
 import { supabase } from "../../utilities/supabase";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 import { showNotification } from "@mantine/notifications";
 
 export function AuthenticationForm(props: PaperProps) {
@@ -41,13 +40,19 @@ export function AuthenticationForm(props: PaperProps) {
   });
 
   const handleSubmit = async (values: typeof form.values) => {
-    console.log("handleSubmit");
-
     if (type === "register") {
-      const { error, user } = await supabase.auth.signUp({
-        email: values.email,
-        password: values.password,
-      });
+      const { error, user } = await supabase.auth.signUp(
+        {
+          email: values.email,
+          password: values.password,
+        },
+        {
+          data: {
+            name: values.name,
+            termsAccepted: values.terms,
+          },
+        }
+      );
 
       if (error) {
         showNotification({

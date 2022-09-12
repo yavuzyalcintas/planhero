@@ -125,7 +125,7 @@ export function NavbarMinimal() {
                   textOverflow: "ellipsis",
                 }}
               >
-                <b>{user.email?.split("@")[0]}</b>
+                <b>{user.user_metadata?.name}</b>
               </Text>
               <NavbarLink icon={IconLogout} label="Logout" onClick={logout} />
             </Stack>
