@@ -1,11 +1,10 @@
-import PageHeader from "../components/common/PageHeader";
+import React from 'react';
+import PageHeader from '../components/common/PageHeader';
 
-const RetroPage: React.FC = () => {
-  return (
-    <>
-      <PageHeader text="Retrospective" />
-    </>
-  );
-};
+const RetroPage: React.FC = () => (
+	<>
+		<PageHeader text='Retrospective' />
+	</>
+);
 
 export default RetroPage;

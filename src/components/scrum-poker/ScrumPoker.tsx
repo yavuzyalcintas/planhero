@@ -1,27 +1,17 @@
-import {
-  Card,
-  Center,
-  Grid,
-  Text,
-  Stack,
-  Container,
-  Space,
-  Group,
-  TextInput,
-  Button,
-} from "@mantine/core";
+import React from "react";
+import { Text, Space, Group, TextInput, Button } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../utilities/authProvider";
 import { supabase } from "../../utilities/supabase";
 
-interface Session {
+type Session = {
   id: string;
   name: string;
   created_at: Date;
   created_by: string;
-}
+};
 
 const ScrumPoker: React.FC = () => {
   const [sessions, setSesions] = useState<Session[]>();
@@ -66,7 +56,7 @@ const ScrumPoker: React.FC = () => {
     const { data, error } = await supabase
       .from<Session>("scrum_poker_session")
       .select()
-      .eq("created_by", user?.id as string)
+      .eq("created_by", user?.id!)
       .limit(5)
       .order("created_at", { ascending: false });
 
@@ -100,9 +90,9 @@ const ScrumPoker: React.FC = () => {
             size="lg"
             placeholder="Room Name"
             value={form.values.sessionName}
-            onChange={(event) =>
-              form.setFieldValue("sessionName", event.currentTarget.value)
-            }
+            onChange={(event) => {
+              form.setFieldValue("sessionName", event.currentTarget.value);
+            }}
           />
           <Button size="lg" type="submit">
             Create
@@ -110,9 +100,9 @@ const ScrumPoker: React.FC = () => {
         </Group>
       </form>
 
-      {sessions?.map((session) => {
-        return <h1 key={session.id}>{session.name}</h1>;
-      })}
+      {sessions?.map((session) => (
+        <h1 key={session.id}>{session.name}</h1>
+      ))}
     </>
   );
 };

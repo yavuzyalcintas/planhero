@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
-import { HomePage } from "./pages/HomePage";
-import { NavbarMinimal } from "./components/common/Navbar";
-import { FooterSimple } from "./components/common/Footer";
+import HomePage from "./pages/HomePage";
+import NavbarMinimal from "./components/common/Navbar";
+import FooterSimple from "./components/common/Footer";
 import { AppShell, MantineProvider } from "@mantine/core";
 import LoginPage from "./pages/LoginPage";
 import ScrumPokerPage from "./pages/ScrumPokerPage";
