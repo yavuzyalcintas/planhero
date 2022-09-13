@@ -1,20 +1,18 @@
 import React from "react";
-import { Text, Space, Group, TextInput, Button } from "@mantine/core";
+import { Text, Space, Group, TextInput, Button, Stack } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../utilities/authProvider";
 import { supabase } from "../../utilities/supabase";
-
-type Session = {
-  id: string;
-  name: string;
-  created_at: Date;
-  created_by: string;
-};
+import SessionCard from "./SessionCard";
+import {
+  ScrumPokerSession,
+  ScrumPokerSessionTable,
+} from "../../models/supabaseEntities";
 
 const ScrumPoker: React.FC = () => {
-  const [sessions, setSesions] = useState<Session[]>();
+  const [sessions, setSesions] = useState<ScrumPokerSession[]>();
   const form = useForm({
     initialValues: {
       sessionName: "",
@@ -23,11 +21,12 @@ const ScrumPoker: React.FC = () => {
 
   const user = useAuth();
 
+  // Create new session
   const handleSubmit = async (values: typeof form.values) => {
     console.log("sessionName", values.sessionName);
 
     const { data, error } = await supabase
-      .from<Session>("scrum_poker_session")
+      .from<ScrumPokerSession>("scrum_poker_session")
       .insert([{ name: values.sessionName, created_by: user?.id }])
       .single();
 
@@ -54,7 +53,7 @@ const ScrumPoker: React.FC = () => {
 
   const getSessions = async () => {
     const { data, error } = await supabase
-      .from<Session>("scrum_poker_session")
+      .from<ScrumPokerSession>(ScrumPokerSessionTable)
       .select()
       .eq("created_by", user?.id!)
       .limit(5)
@@ -100,9 +99,16 @@ const ScrumPoker: React.FC = () => {
         </Group>
       </form>
 
-      {sessions?.map((session) => (
-        <h1 key={session.id}>{session.name}</h1>
-      ))}
+      <Stack mt={20}>
+        {sessions?.map((session) => (
+          <SessionCard
+            key={session.id}
+            title={session.name}
+            description={`Session ID: ${session.id}`}
+            sessionID={session.id}
+          />
+        ))}
+      </Stack>
     </>
   );
 };

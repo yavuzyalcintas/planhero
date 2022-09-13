@@ -7,6 +7,7 @@ import LoginPage from "./pages/LoginPage";
 import ScrumPokerPage from "./pages/ScrumPokerPage";
 import AuthGuard from "./guards/AuthGuard";
 import RetroPage from "./pages/RetroPage";
+import ScrumPokerHomePage from "./pages/ScrumPokerHomePage";
 
 function App() {
   return (
@@ -63,6 +64,15 @@ function App() {
           <Routes>
             <Route
               path="/scrum-poker"
+              element={
+                <AuthGuard>
+                  <ScrumPokerHomePage />
+                </AuthGuard>
+              }
+            />
+
+            <Route
+              path="/scrum-poker/:sessionID"
               element={
                 <AuthGuard>
                   <ScrumPokerPage />
