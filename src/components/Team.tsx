@@ -18,7 +18,7 @@ const Team: React.FC<TeamProps> = ({ sessionUserVotes }) => {
         <b>Team</b>
         <hr color="gray" />
       </Text>
-      {teamMembers.map((member, idx) => (
+      {teamMembers.sort().map((member, idx) => (
         <Group key={idx} position="apart">
           <Text>{member.name}</Text>
           <Text size={24} weight={800}>

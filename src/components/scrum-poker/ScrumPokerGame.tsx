@@ -60,17 +60,21 @@ const ScrumPokerGame: React.FC<ScrumPokerGameProps> = ({ sessionID }) => {
   useEffect(() => {
     createSessionUser();
     getSessionUserVotes();
+  }, []);
 
+  useEffect(() => {
     const mySubscription = supabase
       .from(`${ScrumPokerSessionUserTable}:session_id=eq.${sessionID}`)
-      .on("*", (payload) => {
+      .on("INSERT", (payload) => {
         console.log("Change received!", payload);
-
-        const item = sessionUserVotes.find((object) => {
-          return object.user_id === payload.new.user_id;
-        });
-
-        console.log(item);
+        setSessionUserVotes((current) => [...current, payload.new]);
+      })
+      .on("UPDATE", (payload) => {
+        console.log("Change received!", payload);
+        setSessionUserVotes((current) => [
+          ...current.filter((w) => w.user_id !== payload.new.user_id),
+          payload.new,
+        ]);
       })
       .subscribe();
 
