@@ -7,8 +7,10 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "lint:l": "eslint .",
-    "lint:f": "eslint . --fix --ext .js,.jsx,.ts,.tsx"
+    "lint:fix": "eslint ./src --ext .jsx,.js,.ts,.tsx --quiet --fix --ignore-path ./.gitignore",
+    "lint:format": "prettier  --loglevel warn --write \"./**/*.{js,jsx,ts,tsx,css,md,json}\" ",
+    "lint": "yarn lint:format && yarn lint:fix ",
+    "type-check": "tsc"
   },
   "dependencies": {
     "@emotion/react": "^11.10.4",
@@ -31,9 +33,11 @@
     "@typescript-eslint/parser": "^5.37.0",
     "@vitejs/plugin-react": "^2.0.0",
     "eslint": "^8.23.1",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-config-xo": "^0.42.0",
     "eslint-config-xo-typescript": "^0.53.0",
     "eslint-plugin-react": "^7.31.8",
+    "prettier": "^2.7.1",
     "sass": "^1.54.0",
     "typescript": "^4.8.3",
     "vite": "^3.0.0"

@@ -3,10 +3,7 @@ import { Card, Center, Container, Grid, Stack, Text } from "@mantine/core";
 import Team from "../Team";
 import { showNotification } from "@mantine/notifications";
 import { supabase } from "../../utilities/supabase";
-import {
-  ScrumPokerSessionUser,
-  ScrumPokerSessionUserTable,
-} from "../../models/supabaseEntities";
+import { ScrumPokerSessionUser, ScrumPokerSessionUserTable } from "../../models/supabaseEntities";
 import { useAuth } from "../../utilities/authProvider";
 
 type ScrumPokerGameProps = {

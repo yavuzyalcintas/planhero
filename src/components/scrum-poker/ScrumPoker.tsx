@@ -6,10 +6,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../utilities/authProvider";
 import { supabase } from "../../utilities/supabase";
 import SessionCard from "./SessionCard";
-import {
-  ScrumPokerSession,
-  ScrumPokerSessionTable,
-} from "../../models/supabaseEntities";
+import { ScrumPokerSession, ScrumPokerSessionTable } from "../../models/supabaseEntities";
 
 const ScrumPoker: React.FC = () => {
   const [sessions, setSesions] = useState<ScrumPokerSession[]>();

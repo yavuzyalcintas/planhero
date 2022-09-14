@@ -9,11 +9,7 @@ interface SessionCardProps {
   sessionID: string;
 }
 
-const SessionCard: React.FC<SessionCardProps> = ({
-  title,
-  description,
-  sessionID,
-}) => {
+const SessionCard: React.FC<SessionCardProps> = ({ title, description, sessionID }) => {
   const navigate = useNavigate();
   return (
     <NavLink

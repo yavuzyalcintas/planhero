@@ -14,12 +14,7 @@ type IPageHeaderProps = {
 const PageHeader: React.FC<IPageHeaderProps> = ({ text, breadcrumbItems }) => (
   <>
     <h1>
-      <Text
-        component="span"
-        variant="gradient"
-        gradient={{ from: "yellow", to: "cyan" }}
-        inherit
-      >
+      <Text component="span" variant="gradient" gradient={{ from: "yellow", to: "cyan" }} inherit>
         {text}
       </Text>
     </h1>
@@ -30,11 +25,7 @@ const PageHeader: React.FC<IPageHeaderProps> = ({ text, breadcrumbItems }) => (
         {breadcrumbItems?.map((item, idx) => {
           return (
             <Anchor color="cyan" href={item.href} key={idx}>
-              {idx == breadcrumbItems?.length - 1 ? (
-                <b>{item.title}</b>
-              ) : (
-                <>{item.title}</>
-              )}
+              {idx == breadcrumbItems?.length - 1 ? <b>{item.title}</b> : <>{item.title}</>}
             </Anchor>
           );
         })}
