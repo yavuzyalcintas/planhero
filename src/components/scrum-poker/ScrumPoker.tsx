@@ -11,13 +11,12 @@ import SessionCard from "./SessionCard";
 
 const ScrumPoker: React.FC = () => {
   const [sessions, setSesions] = useState<ScrumPokerSession[]>();
+  const user = useAuth();
   const form = useForm({
     initialValues: {
       sessionName: "",
     },
   });
-
-  const user = useAuth();
 
   // Create new session
   const handleSubmit = async (values: typeof form.values) => {
@@ -50,6 +49,7 @@ const ScrumPoker: React.FC = () => {
   };
 
   const getSessions = async () => {
+    console.count("getSessions");
     const { data, error } = await supabase
       .from<ScrumPokerSession>(ScrumPokerSessionTable)
       .select()
@@ -71,8 +71,9 @@ const ScrumPoker: React.FC = () => {
   };
 
   useEffect(() => {
-    getSessions();
-  }, []);
+    console.count("ScrumPoker");
+    if (user) getSessions();
+  }, [user]);
 
   return (
     <>

@@ -17,7 +17,7 @@ const Team: React.FC = () => {
         <hr color="gray" />
       </Text>
       {teamMembers.map((member, idx) => (
-        <Group key={idx} position="apart" mt={10}>
+        <Group key={idx} position="apart">
           <Text>{member.name}</Text>
           <Text size={24} weight={800}>
             {member.vote}

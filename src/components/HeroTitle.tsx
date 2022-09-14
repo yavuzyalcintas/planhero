@@ -99,7 +99,7 @@ export function HeroTitle() {
             className={classes.control}
             color="yellow"
             onClick={() => {
-              navigate("/scrum-poker");
+              navigate("/login");
             }}
           >
             Get started

@@ -1,10 +1,10 @@
 import type { User } from "@supabase/supabase-js";
 import React from "react";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
 import { supabase } from "./supabase";
 
-const authContext = createContext<User | undefined>(undefined);
+const authContext = createContext<User | null>(null);
 
 type AuthProviderProps = {
   children: React.ReactNode;
@@ -18,24 +18,17 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 export const useAuth = () => useContext(authContext);
 
 function useProvideAuth() {
-  const [user, setUser] = useState<User | undefined>(undefined);
+  const [user, setUser] = useState<User | null>(supabase.auth.user());
 
-  useEffect(() => {
-    const user = supabase.auth.user();
-    setUser(user!);
+  supabase.auth.onAuthStateChange((event, session) => {
+    if (event === "SIGNED_IN") {
+      setUser(session?.user!);
+    }
 
-    const auth = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_IN") {
-        setUser(session?.user!);
-      }
-
-      if (event === "SIGNED_OUT") {
-        setUser(undefined);
-      }
-    });
-
-    return () => auth.data?.unsubscribe();
-  }, []);
+    if (event === "SIGNED_OUT") {
+      setUser(null);
+    }
+  });
 
   return user;
 }

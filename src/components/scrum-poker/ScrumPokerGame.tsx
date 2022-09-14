@@ -1,4 +1,4 @@
-import { Card, Center, Container, Grid, Stack, Text } from "@mantine/core";
+import { Card, Center, Grid, Group, Text } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import React, { useEffect } from "react";
 
@@ -35,10 +35,10 @@ const ScrumPokerGame: React.FC<ScrumPokerGameProps> = ({ sessionID }) => {
   }, []);
 
   return (
-    <Stack>
+    <Group position="center" grow>
       <Grid>
         {[1, 2, 3, 5, 8, 13, 21, 34].map((score, index) => (
-          <Grid.Col span={3} key={index}>
+          <Grid.Col span={3} key={index} style={{ maxWidth: 500, minWidth: 250 }}>
             <Card radius="md" withBorder>
               <Center>
                 <Text size={100}>{score}</Text>
@@ -47,10 +47,10 @@ const ScrumPokerGame: React.FC<ScrumPokerGameProps> = ({ sessionID }) => {
           </Grid.Col>
         ))}
       </Grid>
-      <Container style={{ minWidth: 400 }}>
+      <div style={{ minWidth: 400, maxWidth: 600 }}>
         <Team />
-      </Container>
-    </Stack>
+      </div>
+    </Group>
   );
 };
 
