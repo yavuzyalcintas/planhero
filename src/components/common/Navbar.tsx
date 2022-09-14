@@ -2,7 +2,6 @@ import { Center, createStyles, Navbar, Stack, Text, Tooltip, UnstyledButton } fr
 import type { TablerIcon } from "@tabler/icons";
 import { IconDeviceGamepad, IconHome2, IconLogout, IconMessages } from "@tabler/icons";
 import React from "react";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useAuth } from "../../utilities/authProvider";
@@ -60,17 +59,17 @@ const menuItems = [
 ];
 
 const NavbarMinimal: React.FC = () => {
-  const [active, setActive] = useState(0);
+  // const [active, setActive] = useState(0);
   const navigate = useNavigate();
   const user = useAuth();
 
-  const links = menuItems.map((link, index) => (
+  const links = menuItems.map((link) => (
     <NavbarLink
       {...link}
       key={link.label}
-      active={index === active}
+      //active={index === active}
       onClick={() => {
-        setActive(index);
+        //setActive(index);
         navigate(link.to);
       }}
     />

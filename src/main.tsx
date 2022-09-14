@@ -7,13 +7,11 @@ import App from "./App";
 import { AuthProvider } from "./utilities/authProvider";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <AuthProvider>
-      <BrowserRouter>
-        <NotificationsProvider>
-          <App />
-        </NotificationsProvider>
-      </BrowserRouter>
-    </AuthProvider>
-  </React.StrictMode>
+  <AuthProvider>
+    <BrowserRouter>
+      <NotificationsProvider>
+        <App />
+      </NotificationsProvider>
+    </BrowserRouter>
+  </AuthProvider>
 );

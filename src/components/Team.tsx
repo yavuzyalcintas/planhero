@@ -1,14 +1,16 @@
 import { Group, Text } from "@mantine/core";
 import React from "react";
 
-const Team: React.FC = () => {
-  const teamMembers = [
-    { name: "AtarliBoi", vote: 5 },
-    { name: "HaveUMetEge", vote: 3 },
-    { name: "muratcansahn", vote: 21 },
-    { name: "seNeTV", vote: 34 },
-    { name: "mgmetehanxx", vote: 8 },
-  ];
+import { ScrumPokerSessionUser } from "../models/supabaseEntities";
+
+interface TeamProps {
+  sessionUserVotes: ScrumPokerSessionUser[];
+}
+
+const Team: React.FC<TeamProps> = ({ sessionUserVotes }) => {
+  const teamMembers = sessionUserVotes.map((userVote) => {
+    return { name: userVote.user_id, vote: userVote.vote };
+  });
 
   return (
     <>

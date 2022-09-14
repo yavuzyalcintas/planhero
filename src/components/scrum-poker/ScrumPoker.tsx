@@ -20,8 +20,6 @@ const ScrumPoker: React.FC = () => {
 
   // Create new session
   const handleSubmit = async (values: typeof form.values) => {
-    console.log("sessionName", values.sessionName);
-
     const { data, error } = await supabase
       .from<ScrumPokerSession>("scrum_poker_session")
       .insert([{ name: values.sessionName, created_by: user?.id }])
@@ -71,7 +69,6 @@ const ScrumPoker: React.FC = () => {
   };
 
   useEffect(() => {
-    console.count("ScrumPoker");
     if (user) getSessions();
   }, [user]);
 
