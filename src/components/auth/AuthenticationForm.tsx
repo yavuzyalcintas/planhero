@@ -1,22 +1,22 @@
-import { useToggle, upperFirst } from "@mantine/hooks";
-import { useForm } from "@mantine/form";
 import type { PaperProps } from "@mantine/core";
 import {
-  TextInput,
-  PasswordInput,
-  Text,
-  Paper,
-  Group,
-  Button,
-  Divider,
-  Checkbox,
   Anchor,
+  Button,
+  Checkbox,
+  Divider,
+  Group,
+  Paper,
+  PasswordInput,
   Stack,
+  Text,
+  TextInput,
 } from "@mantine/core";
-import GoogleButton from "./SocialButtons";
-import { supabase } from "../../utilities/supabase";
-import { useNavigate } from "react-router-dom";
+import { useForm } from "@mantine/form";
+import { upperFirst, useToggle } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
+import { useNavigate } from "react-router-dom";
+
+import { supabase } from "../../utilities/supabase";
 
 export function AuthenticationForm(props: PaperProps) {
   const navigate = useNavigate();

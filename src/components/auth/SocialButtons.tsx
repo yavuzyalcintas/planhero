@@ -1,8 +1,8 @@
-import React from "react";
 import type { ButtonProps } from "@mantine/core";
 import { Button, Group } from "@mantine/core";
-import { GithubIcon, DiscordIcon, TwitterIcon } from "@mantine/ds";
-import { IconBrandGoogle, IconBrandFacebook } from "@tabler/icons";
+import { DiscordIcon, GithubIcon, TwitterIcon } from "@mantine/ds";
+import { IconBrandFacebook, IconBrandGoogle } from "@tabler/icons";
+import React from "react";
 
 const GoogleButton: React.FC<ButtonProps> = (props: ButtonProps) => (
   <Button leftIcon={<IconBrandGoogle />} variant="default" color="gray" {...props} />

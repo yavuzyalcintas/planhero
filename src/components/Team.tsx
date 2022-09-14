@@ -1,4 +1,5 @@
 import { Group, Text } from "@mantine/core";
+import React from "react";
 
 const Team: React.FC = () => {
   const teamMembers = [

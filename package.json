@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "lint:fix": "eslint ./src --ext .jsx,.js,.ts,.tsx --quiet --fix --ignore-path ./.gitignore",
     "lint:format": "prettier  --loglevel warn --write \"./**/*.{js,jsx,ts,tsx,css,md,json}\" ",
-    "lint": "yarn lint:format && yarn lint:fix ",
+    "lint": "npm run lint:format && npm run lint:fix ",
     "type-check": "tsc"
   },
   "dependencies": {
@@ -36,7 +36,10 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-xo": "^0.42.0",
     "eslint-config-xo-typescript": "^0.53.0",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
+    "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.31.8",
+    "eslint-plugin-simple-import-sort": "^8.0.0",
     "prettier": "^2.7.1",
     "sass": "^1.54.0",
     "typescript": "^4.8.3",

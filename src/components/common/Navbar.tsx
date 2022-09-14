@@ -1,12 +1,13 @@
+import { Center, createStyles, Navbar, Stack, Text, Tooltip, UnstyledButton } from "@mantine/core";
+import type { TablerIcon } from "@tabler/icons";
+import { IconDeviceGamepad, IconHome2, IconLogout, IconMessages } from "@tabler/icons";
 import React from "react";
 import { useState } from "react";
-import { Navbar, Center, Tooltip, UnstyledButton, createStyles, Stack, Text } from "@mantine/core";
-import type { TablerIcon } from "@tabler/icons";
-import { IconHome2, IconLogout, IconDeviceGamepad, IconMessages } from "@tabler/icons";
-import Logo from "./Logo";
+import { useNavigate } from "react-router-dom";
+
 import { useAuth } from "../../utilities/authProvider";
 import { supabase } from "../../utilities/supabase";
-import { useNavigate } from "react-router-dom";
+import Logo from "./Logo";
 
 const useStyles = createStyles((theme) => ({
   link: {

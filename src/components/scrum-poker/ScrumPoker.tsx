@@ -1,12 +1,13 @@
-import React from "react";
-import { Text, Space, Group, TextInput, Button, Stack } from "@mantine/core";
+import { Button, Group, Space, Stack, Text, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
+import React from "react";
 import { useEffect, useState } from "react";
+
+import { ScrumPokerSession, ScrumPokerSessionTable } from "../../models/supabaseEntities";
 import { useAuth } from "../../utilities/authProvider";
 import { supabase } from "../../utilities/supabase";
 import SessionCard from "./SessionCard";
-import { ScrumPokerSession, ScrumPokerSessionTable } from "../../models/supabaseEntities";
 
 const ScrumPoker: React.FC = () => {
   const [sessions, setSesions] = useState<ScrumPokerSession[]>();

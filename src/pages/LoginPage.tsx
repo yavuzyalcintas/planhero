@@ -1,5 +1,6 @@
-import React from "react";
 import { Center, Grid, Stack } from "@mantine/core";
+import React from "react";
+
 import { AuthenticationForm } from "../components/auth/AuthenticationForm";
 import Logo from "../components/common/Logo";
 

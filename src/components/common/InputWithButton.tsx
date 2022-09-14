@@ -1,7 +1,7 @@
-import React from "react";
 import type { TextInputProps } from "@mantine/core";
-import { TextInput, ActionIcon, useMantineTheme } from "@mantine/core";
-import { IconArrowRight, IconArrowLeft } from "@tabler/icons";
+import { ActionIcon, TextInput, useMantineTheme } from "@mantine/core";
+import { IconArrowLeft, IconArrowRight } from "@tabler/icons";
+import React from "react";
 
 export function InputWithButton(
   props: TextInputProps,

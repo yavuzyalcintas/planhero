@@ -1,5 +1,5 @@
-import React from "react";
 import { Anchor, Breadcrumbs, Text } from "@mantine/core";
+import React from "react";
 
 type Breadcrumb = {
   href?: string;

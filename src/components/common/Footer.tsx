@@ -1,6 +1,7 @@
-import React from "react";
-import { createStyles, Container, Group, Anchor, Button } from "@mantine/core";
+import { Anchor, Button, Container, createStyles, Group } from "@mantine/core";
 import { GithubIcon } from "@mantine/ds";
+import React from "react";
+
 import Logo from "./Logo";
 
 const useStyles = createStyles((theme) => ({

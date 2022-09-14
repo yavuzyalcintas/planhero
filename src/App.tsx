@@ -1,13 +1,14 @@
-import { Routes, Route } from "react-router-dom";
-import HomePage from "./pages/HomePage";
-import NavbarMinimal from "./components/common/Navbar";
-import FooterSimple from "./components/common/Footer";
 import { AppShell, MantineProvider } from "@mantine/core";
-import LoginPage from "./pages/LoginPage";
-import ScrumPokerPage from "./pages/ScrumPokerPage";
+import { Route, Routes } from "react-router-dom";
+
+import FooterSimple from "./components/common/Footer";
+import NavbarMinimal from "./components/common/Navbar";
 import AuthGuard from "./guards/AuthGuard";
+import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/LoginPage";
 import RetroPage from "./pages/RetroPage";
 import ScrumPokerHomePage from "./pages/ScrumPokerHomePage";
+import ScrumPokerPage from "./pages/ScrumPokerPage";
 
 function App() {
   return (

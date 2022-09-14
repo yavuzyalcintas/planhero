@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
 import { Card, Center, Container, Grid, Stack, Text } from "@mantine/core";
-import Team from "../Team";
 import { showNotification } from "@mantine/notifications";
-import { supabase } from "../../utilities/supabase";
+import React, { useEffect } from "react";
+
 import { ScrumPokerSessionUser, ScrumPokerSessionUserTable } from "../../models/supabaseEntities";
 import { useAuth } from "../../utilities/authProvider";
+import { supabase } from "../../utilities/supabase";
+import Team from "../Team";
 
 type ScrumPokerGameProps = {
   sessionID: string;

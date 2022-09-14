@@ -1,6 +1,6 @@
-import React from "react";
 import { NavLink } from "@mantine/core";
 import { IconChevronRight, IconHome } from "@tabler/icons";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 
 interface SessionCardProps {

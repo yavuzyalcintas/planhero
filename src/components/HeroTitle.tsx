@@ -1,4 +1,4 @@
-import { createStyles, Container, Text, Button, Group } from "@mantine/core";
+import { Button, Container, createStyles, Group, Text } from "@mantine/core";
 import { GithubIcon } from "@mantine/ds";
 import { useNavigate } from "react-router-dom";
 
@@ -89,7 +89,7 @@ export function HeroTitle() {
         </h1>
 
         <Text className={classes.description} color="dimmed">
-          You can play <b>Scrum Poker</b> and do <b>Retrospective</b> with your teams. It's{" "}
+          You can play <b>Scrum Poker</b> and do <b>Retrospective</b> with your teams. It&apos;s{" "}
           <b>free</b> and <b>Open-Source</b>!
         </Text>
 

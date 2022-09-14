@@ -1,5 +1,5 @@
-import React from "react";
 import { Text } from "@mantine/core";
+import React from "react";
 import { Link } from "react-router-dom";
 
 type LogoProps = {
