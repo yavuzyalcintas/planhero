@@ -47,7 +47,6 @@ const ScrumPoker: React.FC = () => {
   };
 
   const getSessions = async () => {
-    console.count("getSessions");
     const { data, error } = await supabase
       .from<ScrumPokerSession>(ScrumPokerSessionTable)
       .select()

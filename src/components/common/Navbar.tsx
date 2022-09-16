@@ -93,8 +93,8 @@ const NavbarMinimal: React.FC = () => {
   };
 
   useEffect(() => {
-    getProfile();
-  }, []);
+    if (user) getProfile();
+  }, [user]);
 
   return (
     <>
@@ -131,8 +131,8 @@ const NavbarMinimal: React.FC = () => {
               >
                 <b>{profile?.full_name}</b>
               </Text>
-              <NavbarLink icon={IconLogout} label="Logout" onClick={logout} />
             </Stack>
+            <NavbarLink icon={IconLogout} label="Logout" onClick={logout} />
           </Navbar.Section>
         </Navbar>
       )}
