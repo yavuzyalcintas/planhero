@@ -2,8 +2,7 @@ import { Group, Text } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import React, { useEffect, useState } from "react";
 
-import * as supabaseEntities from "../../models/supabaseEntities";
-import { ScrumPokerSessionUser } from "../../models/supabaseEntities";
+import { ScrumPokerSessionUser, ScrumPokerSessionUserTable } from "../../models/supabaseEntities";
 import { supabase } from "../../utilities/supabase";
 
 interface SessionTeamProps {
@@ -12,9 +11,7 @@ interface SessionTeamProps {
 }
 
 const SessionTeam: React.FC<SessionTeamProps> = ({ sessionID, currentUserSession }) => {
-  const [sessionUserVotes, setSessionUserVotes] = useState<
-    supabaseEntities.ScrumPokerSessionUser[]
-  >([]);
+  const [sessionUserVotes, setSessionUserVotes] = useState<ScrumPokerSessionUser[]>([]);
 
   useEffect(() => {
     getSessionUserVotes();
@@ -22,9 +19,7 @@ const SessionTeam: React.FC<SessionTeamProps> = ({ sessionID, currentUserSession
 
   useEffect(() => {
     const mySubscription = supabase
-      .from<supabaseEntities.ScrumPokerSessionUser>(
-        `${supabaseEntities.ScrumPokerSessionUserTable}:session_id=eq.${sessionID}`
-      )
+      .from<ScrumPokerSessionUser>(`${ScrumPokerSessionUserTable}:session_id=eq.${sessionID}`)
       .on("INSERT", (payload) => {
         setSessionUserVotes((current) => {
           return [...current, payload.new];
@@ -47,7 +42,7 @@ const SessionTeam: React.FC<SessionTeamProps> = ({ sessionID, currentUserSession
 
   const getSessionUserVotes = async () => {
     const { data, error } = await supabase
-      .from<supabaseEntities.ScrumPokerSessionUser>(supabaseEntities.ScrumPokerSessionUserTable)
+      .from<ScrumPokerSessionUser>(ScrumPokerSessionUserTable)
       .select("*")
       .eq("session_id", sessionID!);
 
