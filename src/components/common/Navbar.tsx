@@ -1,9 +1,10 @@
 import { Center, createStyles, Navbar, Stack, Text, Tooltip, UnstyledButton } from "@mantine/core";
-import type { TablerIcon } from "@tabler/icons";
+import { IconUserCircle, TablerIcon } from "@tabler/icons";
 import { IconDeviceGamepad, IconHome2, IconLogout, IconMessages } from "@tabler/icons";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { Profiles, ProfilesTable } from "../../models/supabaseEntities";
 import { useAuth } from "../../utilities/authProvider";
 import { supabase } from "../../utilities/supabase";
 import Logo from "./Logo";
@@ -60,6 +61,7 @@ const menuItems = [
 
 const NavbarMinimal: React.FC = () => {
   // const [active, setActive] = useState(0);
+  const [profile, setProfile] = useState<Profiles | null>(null);
   const navigate = useNavigate();
   const user = useAuth();
 
@@ -75,10 +77,24 @@ const NavbarMinimal: React.FC = () => {
     />
   ));
 
+  const getProfile = async () => {
+    const profile = await supabase
+      .from<Profiles>(ProfilesTable)
+      .select("*")
+      .eq("id", user?.id!)
+      .single();
+
+    setProfile(profile.data);
+  };
+
   const logout = async () => {
     supabase.auth.signOut();
     navigate("/");
   };
+
+  useEffect(() => {
+    getProfile();
+  }, []);
 
   return (
     <>
@@ -93,8 +109,17 @@ const NavbarMinimal: React.FC = () => {
             </Stack>
           </Navbar.Section>
           <Navbar.Section>
-            <Stack justify="center" spacing={0}>
-              Hi,{" "}
+            <Stack
+              justify="center"
+              spacing={0}
+              onClick={() => {
+                navigate(`/p/${profile?.id}`);
+              }}
+              style={{ cursor: "pointer" }}
+            >
+              <Center inline={true}>
+                <IconUserCircle size={30} />
+              </Center>
               <Text
                 color="yellow"
                 size={16}
@@ -104,7 +129,7 @@ const NavbarMinimal: React.FC = () => {
                   textOverflow: "ellipsis",
                 }}
               >
-                <b>{user.user_metadata?.name}</b>
+                <b>{profile?.full_name}</b>
               </Text>
               <NavbarLink icon={IconLogout} label="Logout" onClick={logout} />
             </Stack>

@@ -16,6 +16,7 @@ import { upperFirst, useToggle } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
 import { useNavigate } from "react-router-dom";
 
+import { Profiles } from "../../models/supabaseEntities";
 import { supabase } from "../../utilities/supabase";
 
 export function AuthenticationForm(props: PaperProps) {
@@ -33,23 +34,16 @@ export function AuthenticationForm(props: PaperProps) {
     validate: {
       email: (val) => (/^\S+@\S+$/.test(val) ? null : "Invalid email"),
       password: (val) => (val.length <= 6 ? "Password should include at least 6 characters" : null),
+      name: (val) => (val.length <= 0 ? "Name required" : null),
     },
   });
 
   const handleSubmit = async (values: typeof form.values) => {
     if (type === "register") {
-      const { error, user } = await supabase.auth.signUp(
-        {
-          email: values.email,
-          password: values.password,
-        },
-        {
-          data: {
-            name: values.name,
-            termsAccepted: values.terms,
-          },
-        }
-      );
+      const { error, user } = await supabase.auth.signUp({
+        email: values.email,
+        password: values.password,
+      });
 
       if (error) {
         showNotification({
@@ -57,9 +51,23 @@ export function AuthenticationForm(props: PaperProps) {
           message: error.message,
           color: "red",
         });
+        return;
       }
 
       if (user) {
+        const { error } = await supabase
+          .from<Profiles>("profiles")
+          .insert({ id: user.id, full_name: values.name });
+
+        if (error) {
+          showNotification({
+            title: "Register Error",
+            message: error.message,
+            color: "red",
+          });
+          return;
+        }
+
         navigate("/");
       }
     }
@@ -101,12 +109,14 @@ export function AuthenticationForm(props: PaperProps) {
           <Stack>
             {type === "register" && (
               <TextInput
+                required
                 label="Name"
                 placeholder="Your name"
                 value={form.values.name}
                 onChange={(event) => {
                   form.setFieldValue("name", event.currentTarget.value);
                 }}
+                error={form.errors.name && "Name required"}
               />
             )}
 

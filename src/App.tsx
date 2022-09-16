@@ -5,6 +5,7 @@ import FooterSimple from "./components/common/Footer";
 import NavbarMinimal from "./components/common/Navbar";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
+import ProfilePage from "./pages/ProfilePage";
 import RetroPage from "./pages/RetroPage";
 import ScrumPokerHomePage from "./pages/ScrumPokerHomePage";
 import ScrumPokerPage from "./pages/ScrumPokerPage";
@@ -67,6 +68,7 @@ function App() {
             <Route path="/retro" element={<RetroPage />} />
 
             <Route path="/" element={<HomePage />} />
+            <Route path="/p/:userID" element={<ProfilePage />} />
             <Route path="/login" element={<LoginPage />} />
           </Routes>
         </AppShell>

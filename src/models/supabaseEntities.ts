@@ -1,3 +1,13 @@
+export const ProfilesTable = "profiles";
+export interface Profiles {
+  id: string;
+  username: string;
+  avatar_url: string;
+  website: string;
+  full_name: string;
+  updated_at: Date;
+}
+
 export const ScrumPokerSessionTable = "scrum_poker_session";
 export interface ScrumPokerSession {
   id: string;
