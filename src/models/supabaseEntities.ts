@@ -24,4 +24,6 @@ export interface ScrumPokerSessionUser {
   created_at: Date;
   vote: string;
   is_voted: boolean;
+  user_full_name: string;
+  profiles: Profiles;
 }

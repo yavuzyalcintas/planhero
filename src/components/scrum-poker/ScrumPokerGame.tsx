@@ -3,10 +3,15 @@ import { showNotification } from "@mantine/notifications";
 import { IconCheck, IconPlayerPlay, IconPlayerStop } from "@tabler/icons";
 import React, { useEffect, useState } from "react";
 
-import { ScrumPokerSessionUser, ScrumPokerSessionUserTable } from "../../models/supabaseEntities";
+import {
+  Profiles,
+  ProfilesTable,
+  ScrumPokerSessionUser,
+  ScrumPokerSessionUserTable,
+} from "../../models/supabaseEntities";
 import { useAuth } from "../../utilities/authProvider";
 import { supabase } from "../../utilities/supabase";
-import Team from "../Team";
+import SessionTeam from "./SessionTeam";
 
 type ScrumPokerGameProps = {
   sessionID: string;
@@ -14,36 +19,25 @@ type ScrumPokerGameProps = {
 
 const ScrumPokerGame: React.FC<ScrumPokerGameProps> = ({ sessionID }) => {
   const user = useAuth();
-  const [sessionUserVotes, setSessionUserVotes] = useState<ScrumPokerSessionUser[]>([]);
+  const [currentUserSession, setCurrentUserSession] = useState<ScrumPokerSessionUser | undefined>(
+    undefined
+  );
 
   const createSessionUser = async () => {
-    const { error } = await supabase
-      .from<ScrumPokerSessionUser>(ScrumPokerSessionUserTable)
-      .upsert({ user_id: user?.id, session_id: sessionID! });
+    const profile = await supabase
+      .from<Profiles>(ProfilesTable)
+      .select("*")
+      .eq("id", user?.id!)
+      .single();
 
-    if (error) {
-      showNotification({
-        title: "Session User Error",
-        message: error.message,
-        color: "red",
-      });
-
-      return;
-    }
-  };
-
-  const getSessionUserVotes = async () => {
     const { data, error } = await supabase
       .from<ScrumPokerSessionUser>(ScrumPokerSessionUserTable)
-      .select(
-        `
-        session_id,
-        user_id,
-        vote,
-        is_voted
-      `
-      )
-      .eq("session_id", sessionID!);
+      .upsert({
+        user_id: user?.id,
+        session_id: sessionID!,
+        user_full_name: profile.data?.full_name,
+      })
+      .single();
 
     if (error) {
       showNotification({
@@ -51,36 +45,14 @@ const ScrumPokerGame: React.FC<ScrumPokerGameProps> = ({ sessionID }) => {
         message: error.message,
         color: "red",
       });
-
       return;
     }
-    setSessionUserVotes(data);
+
+    setCurrentUserSession(data);
   };
 
   useEffect(() => {
     createSessionUser();
-    getSessionUserVotes();
-  }, []);
-
-  useEffect(() => {
-    const mySubscription = supabase
-      .from(`${ScrumPokerSessionUserTable}:session_id=eq.${sessionID}`)
-      .on("INSERT", (payload) => {
-        console.log("Change received!", payload);
-        setSessionUserVotes((current) => [...current, payload.new]);
-      })
-      .on("UPDATE", (payload) => {
-        console.log("Change received!", payload);
-        setSessionUserVotes((current) => [
-          ...current.filter((w) => w.user_id !== payload.new.user_id),
-          payload.new,
-        ]);
-      })
-      .subscribe();
-
-    return () => {
-      supabase.removeSubscription(mySubscription);
-    };
   }, []);
 
   return (
@@ -116,7 +88,7 @@ const ScrumPokerGame: React.FC<ScrumPokerGameProps> = ({ sessionID }) => {
           </Button.Group>
         </Center>
 
-        <Team sessionUserVotes={sessionUserVotes} />
+        <SessionTeam sessionID={sessionID} currentUserSession={currentUserSession} />
       </div>
     </Group>
   );
