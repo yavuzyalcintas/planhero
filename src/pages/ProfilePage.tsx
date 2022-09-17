@@ -1,4 +1,5 @@
-import { Container, Stack, Text } from "@mantine/core";
+import { Center, Container, Stack, Text } from "@mantine/core";
+import { IconUserCircle } from "@tabler/icons";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -32,6 +33,9 @@ const ProfilePage: React.FC = () => {
       />
       <Container>
         <Stack>
+          <Center>
+            <IconUserCircle size={300} />
+          </Center>
           <Text>
             <b>Full Name:</b> {profile?.full_name}
           </Text>
