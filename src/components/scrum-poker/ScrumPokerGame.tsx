@@ -1,6 +1,6 @@
 import { Button, Center, Group } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
-import { IconCheck, IconPlayerPlay, IconPlayerStop } from "@tabler/icons";
+import { IconCheck, IconPlayerStop, IconRepeat } from "@tabler/icons";
 import React, { useEffect, useState } from "react";
 
 import {
@@ -23,6 +23,7 @@ const ScrumPokerGame: React.FC<ScrumPokerGameProps> = ({ sessionID }) => {
   const [currentUserSession, setCurrentUserSession] = useState<ScrumPokerSessionUser | undefined>(
     undefined
   );
+  const [showVotes, setShowVotes] = useState<boolean>(false);
 
   const createSessionUser = async () => {
     const profile = await supabase
@@ -52,13 +53,32 @@ const ScrumPokerGame: React.FC<ScrumPokerGameProps> = ({ sessionID }) => {
     setCurrentUserSession(data);
   };
 
+  const resetGame = async () => {
+    const { error } = await supabase
+      .from<ScrumPokerSessionUser>(ScrumPokerSessionUserTable)
+      .update({
+        is_voted: false,
+        vote: "0",
+      })
+      .eq("session_id", sessionID!);
+
+    if (error) {
+      showNotification({
+        title: "Reset Error",
+        message: error.message,
+        color: "red",
+      });
+      return;
+    }
+  };
+
   useEffect(() => {
     createSessionUser();
   }, []);
 
   return (
     <Group position="center" grow>
-      <ScrumPokerCards sessionID={sessionID} />
+      <ScrumPokerCards sessionID={sessionID} currentUserSession={currentUserSession} />
       <div style={{ minWidth: 250, maxWidth: 750 }}>
         <Center>
           <Button.Group>
@@ -66,12 +86,19 @@ const ScrumPokerGame: React.FC<ScrumPokerGameProps> = ({ sessionID }) => {
               size="lg"
               variant="outline"
               color="cyan"
-              leftIcon={<IconPlayerPlay size={14} />}
+              leftIcon={<IconRepeat size={14} />}
+              onClick={() => resetGame()}
             >
-              Start Game
+              Reset Game
             </Button>
-            <Button size="lg" variant="outline" color="green" leftIcon={<IconCheck size={14} />}>
-              Show Vote
+            <Button
+              size="lg"
+              variant="outline"
+              color="green"
+              leftIcon={<IconCheck size={14} />}
+              onClick={() => setShowVotes(!showVotes)}
+            >
+              {showVotes ? "Hide" : "Show"} Votes
             </Button>
             <Button size="lg" variant="outline" color="red" leftIcon={<IconPlayerStop size={14} />}>
               Finish Game
@@ -79,7 +106,11 @@ const ScrumPokerGame: React.FC<ScrumPokerGameProps> = ({ sessionID }) => {
           </Button.Group>
         </Center>
 
-        <SessionTeam sessionID={sessionID} currentUserSession={currentUserSession} />
+        <SessionTeam
+          sessionID={sessionID}
+          currentUserSession={currentUserSession}
+          showVotes={showVotes}
+        />
       </div>
     </Group>
   );

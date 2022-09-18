@@ -8,9 +8,10 @@ import { supabase } from "../../utilities/supabase";
 interface SessionTeamProps {
   sessionID: string;
   currentUserSession?: ScrumPokerSessionUser;
+  showVotes: boolean;
 }
 
-const SessionTeam: React.FC<SessionTeamProps> = ({ sessionID, currentUserSession }) => {
+const SessionTeam: React.FC<SessionTeamProps> = ({ sessionID, currentUserSession, showVotes }) => {
   const [sessionUserVotes, setSessionUserVotes] = useState<ScrumPokerSessionUser[]>([]);
 
   useEffect(() => {
@@ -29,6 +30,7 @@ const SessionTeam: React.FC<SessionTeamProps> = ({ sessionID, currentUserSession
         setSessionUserVotes((current) => {
           let currentUser = current.find((w) => w.user_id === payload.new.user_id)!;
           currentUser.vote = payload.new.vote;
+          currentUser.is_voted = payload.new.is_voted;
 
           return [...current.filter((w) => w.user_id !== payload.new.user_id), currentUser];
         });
@@ -65,14 +67,18 @@ const SessionTeam: React.FC<SessionTeamProps> = ({ sessionID, currentUserSession
         <b>Team</b>
         <hr color="gray" />
       </Text>
-      {sessionUserVotes.sort().map((member, idx) => (
-        <Group key={idx} position="apart">
-          <Text>{member?.user_full_name}</Text>
-          <Text size={24} weight={800}>
-            {member.vote}
-          </Text>
-        </Group>
-      ))}
+      {sessionUserVotes
+        .sort((a, b) => (a.user_full_name < b.user_full_name ? -1 : 1))
+        .map((member, idx) => (
+          <Group key={idx} position="apart">
+            <Text color={member.is_voted ? "green" : ""} weight={800}>
+              {member?.user_full_name}
+            </Text>
+            <Text size={24} weight={800}>
+              {showVotes ? member.vote : "?"}
+            </Text>
+          </Group>
+        ))}
     </>
   );
 };
