@@ -1,4 +1,4 @@
-import { Button, Card, Center, Grid, Group, Text } from "@mantine/core";
+import { Button, Center, Group } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import { IconCheck, IconPlayerPlay, IconPlayerStop } from "@tabler/icons";
 import React, { useEffect, useState } from "react";
@@ -11,6 +11,7 @@ import {
 } from "../../models/supabaseEntities";
 import { useAuth } from "../../utilities/authProvider";
 import { supabase } from "../../utilities/supabase";
+import ScrumPokerCards from "./ScrumPokerCards";
 import SessionTeam from "./SessionTeam";
 
 type ScrumPokerGameProps = {
@@ -57,17 +58,7 @@ const ScrumPokerGame: React.FC<ScrumPokerGameProps> = ({ sessionID }) => {
 
   return (
     <Group position="center" grow>
-      <Grid style={{ minWidth: 750 }}>
-        {[1, 2, 3, 5, 8, 13, 21, 34, 55].map((score, index) => (
-          <Grid.Col span={3} key={index} style={{ maxWidth: 500, minWidth: 250 }}>
-            <Card radius="md" withBorder>
-              <Center>
-                <Text size={100}>{score}</Text>
-              </Center>
-            </Card>
-          </Grid.Col>
-        ))}
-      </Grid>
+      <ScrumPokerCards sessionID={sessionID} />
       <div style={{ minWidth: 250, maxWidth: 750 }}>
         <Center>
           <Button.Group>
