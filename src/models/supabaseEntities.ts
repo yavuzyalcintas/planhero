@@ -1,18 +1,18 @@
 export const ProfilesTable = "profiles";
 export interface Profiles {
   id: string;
-  username: string;
-  avatar_url: string;
-  website: string;
+  username?: string;
+  avatar_url?: string;
+  website?: string;
   full_name: string;
-  updated_at: Date;
+  updated_at?: string;
 }
 
 export const ScrumPokerSessionTable = "scrum_poker_session";
 export interface ScrumPokerSession {
   id: string;
   name: string;
-  created_at: Date;
+  created_at?: string;
   created_by: string;
 }
 
@@ -21,9 +21,8 @@ export interface ScrumPokerSessionUser {
   id: string;
   session_id: string;
   user_id: string;
-  created_at: Date;
-  vote: string;
-  is_voted: boolean;
+  created_at?: string;
+  vote?: string;
+  is_voted?: boolean;
   user_full_name: string;
-  profiles: Profiles;
 }

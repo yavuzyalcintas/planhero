@@ -21,8 +21,9 @@ const ScrumPoker: React.FC = () => {
   // Create new session
   const handleSubmit = async (values: typeof form.values) => {
     const { data, error } = await supabase
-      .from<ScrumPokerSession>("scrum_poker_session")
-      .insert([{ name: values.sessionName, created_by: user?.id }])
+      .from(ScrumPokerSessionTable)
+      .insert([{ name: values.sessionName, created_by: user?.id! }])
+      .select()
       .single();
 
     if (error) {
@@ -40,7 +41,7 @@ const ScrumPoker: React.FC = () => {
       {
         id: data.id,
         name: data.name,
-        created_at: data.created_at,
+        created_at: data.created_at!,
         created_by: data.created_by,
       },
     ]);
@@ -48,7 +49,7 @@ const ScrumPoker: React.FC = () => {
 
   const getSessions = async () => {
     const { data, error } = await supabase
-      .from<ScrumPokerSession>(ScrumPokerSessionTable)
+      .from(ScrumPokerSessionTable)
       .select()
       .eq("created_by", user?.id!)
       .limit(5)
@@ -64,7 +65,7 @@ const ScrumPoker: React.FC = () => {
       return;
     }
 
-    setSesions(data);
+    setSesions(data as ScrumPokerSession[]);
   };
 
   useEffect(() => {

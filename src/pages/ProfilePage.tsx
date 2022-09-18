@@ -12,13 +12,9 @@ const ProfilePage: React.FC = () => {
   const [profile, setProfile] = useState<Profiles | null>(null);
 
   const getProfile = async () => {
-    const profile = await supabase
-      .from<Profiles>(ProfilesTable)
-      .select("*")
-      .eq("id", userID!)
-      .single();
+    const profile = await supabase.from(ProfilesTable).select("*").eq("id", userID!).single();
 
-    setProfile(profile.data);
+    setProfile(profile.data as Profiles);
   };
 
   useEffect(() => {

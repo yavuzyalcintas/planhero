@@ -19,7 +19,7 @@
     "@mantine/form": "^5.3.0",
     "@mantine/hooks": "^5.3.0",
     "@mantine/notifications": "^5.3.0",
-    "@supabase/supabase-js": "^1.35.6",
+    "@supabase/supabase-js": "^2.0.0-rc.10",
     "@tabler/icons": "^1.95.1",
     "bootstrap": "^5.2.0",
     "react": "^18.2.0",

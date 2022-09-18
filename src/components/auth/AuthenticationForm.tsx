@@ -16,7 +16,7 @@ import { upperFirst, useToggle } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
 import { useNavigate } from "react-router-dom";
 
-import { Profiles } from "../../models/supabaseEntities";
+import { ProfilesTable } from "../../models/supabaseEntities";
 import { supabase } from "../../utilities/supabase";
 
 export function AuthenticationForm(props: PaperProps) {
@@ -40,7 +40,7 @@ export function AuthenticationForm(props: PaperProps) {
 
   const handleSubmit = async (values: typeof form.values) => {
     if (type === "register") {
-      const { error, user } = await supabase.auth.signUp({
+      const { error, data } = await supabase.auth.signUp({
         email: values.email,
         password: values.password,
       });
@@ -54,10 +54,10 @@ export function AuthenticationForm(props: PaperProps) {
         return;
       }
 
-      if (user) {
+      if (data.user) {
         const { error } = await supabase
-          .from<Profiles>("profiles")
-          .insert({ id: user.id, full_name: values.name });
+          .from(ProfilesTable)
+          .insert({ id: data.user.id, full_name: values.name });
 
         if (error) {
           showNotification({
@@ -73,7 +73,7 @@ export function AuthenticationForm(props: PaperProps) {
     }
 
     if (type === "login") {
-      const { error, user } = await supabase.auth.signIn({
+      const { error, data } = await supabase.auth.signInWithPassword({
         email: values.email,
         password: values.password,
       });
@@ -86,7 +86,7 @@ export function AuthenticationForm(props: PaperProps) {
         });
       }
 
-      if (user) {
+      if (data) {
         navigate("/");
       }
     }

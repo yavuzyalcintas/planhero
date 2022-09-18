@@ -46,7 +46,7 @@ const ScrumPokerCards: React.FC<ScrumPokerCardsProps> = ({ sessionID, currentUse
 
   const setVote = async (vote: string) => {
     const { error } = await supabase
-      .from<ScrumPokerSessionUser>(ScrumPokerSessionUserTable)
+      .from(ScrumPokerSessionUserTable)
       .update({
         is_voted: true,
         vote: vote,

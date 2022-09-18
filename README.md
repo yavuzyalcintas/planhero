@@ -7,9 +7,7 @@
 - Create .env.local like .env.example file
 - Replace env keys with your supabase keys
 
+## Migrations
 
-## Migrations 
 You need to create migration file when you have some db changes
- Detailed info coming soon
- 
-
+Detailed info coming soon

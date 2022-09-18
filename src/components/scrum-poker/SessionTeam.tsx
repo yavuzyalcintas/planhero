@@ -19,32 +19,44 @@ const SessionTeam: React.FC<SessionTeamProps> = ({ sessionID, currentUserSession
   }, [currentUserSession]);
 
   useEffect(() => {
-    const mySubscription = supabase
-      .from<ScrumPokerSessionUser>(`${ScrumPokerSessionUserTable}:session_id=eq.${sessionID}`)
-      .on("INSERT", (payload) => {
-        setSessionUserVotes((current) => {
-          return [...current, payload.new];
-        });
-      })
-      .on("UPDATE", (payload) => {
-        setSessionUserVotes((current) => {
-          let currentUser = current.find((w) => w.user_id === payload.new.user_id)!;
-          currentUser.vote = payload.new.vote;
-          currentUser.is_voted = payload.new.is_voted;
+    const sessionUsersSub = supabase
+      .channel(`public:${ScrumPokerSessionUserTable}:session_id=eq.${sessionID}`)
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: ScrumPokerSessionUserTable },
+        // @ts-ignore
+        (payload) => {
+          console.log("INSERT", payload);
+          setSessionUserVotes((current) => {
+            return [...current, payload.record];
+          });
+        }
+      )
+      .on(
+        "postgres_changes",
+        { event: "UPDATE", schema: "public", table: ScrumPokerSessionUserTable },
+        // @ts-ignore
+        (payload) => {
+          console.log("UPDATE", payload);
+          setSessionUserVotes((current) => {
+            let currentUser = current.find((w) => w.user_id === payload.record.user_id)!;
+            currentUser.vote = payload.record.vote;
+            currentUser.is_voted = payload.record.is_voted;
 
-          return [...current.filter((w) => w.user_id !== payload.new.user_id), currentUser];
-        });
-      })
+            return [...current.filter((w) => w.user_id !== payload.record.user_id), currentUser];
+          });
+        }
+      )
       .subscribe();
 
     return () => {
-      supabase.removeSubscription(mySubscription);
+      sessionUsersSub.unsubscribe();
     };
   }, []);
 
   const getSessionUserVotes = async () => {
     const { data, error } = await supabase
-      .from<ScrumPokerSessionUser>(ScrumPokerSessionUserTable)
+      .from(ScrumPokerSessionUserTable)
       .select("*")
       .eq("session_id", sessionID!);
 
@@ -58,7 +70,7 @@ const SessionTeam: React.FC<SessionTeamProps> = ({ sessionID, currentUserSession
       return;
     }
 
-    setSessionUserVotes(data);
+    setSessionUserVotes(data as ScrumPokerSessionUser[]);
   };
 
   return (

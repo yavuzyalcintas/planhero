@@ -18,7 +18,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 export const useAuth = () => useContext(authContext);
 
 function useProvideAuth() {
-  const [user, setUser] = useState<User | null>(supabase.auth.user());
+  const [user, setUser] = useState<User | null>(() => {
+    let localUser = JSON.parse(localStorage.getItem("supabase.auth.token")!)?.currentSession
+      ?.user as User;
+
+    if (!localUser) {
+      localUser = JSON.parse(localStorage.getItem("sb-localhost-auth-token")!)?.user as User;
+    }
+
+    return localUser;
+  });
 
   supabase.auth.onAuthStateChange((event, session) => {
     if (event === "SIGNED_IN") {

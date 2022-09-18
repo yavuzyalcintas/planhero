@@ -4,7 +4,6 @@ import { IconCheck, IconPlayerStop, IconRepeat } from "@tabler/icons";
 import React, { useEffect, useState } from "react";
 
 import {
-  Profiles,
   ProfilesTable,
   ScrumPokerSessionUser,
   ScrumPokerSessionUserTable,
@@ -26,19 +25,16 @@ const ScrumPokerGame: React.FC<ScrumPokerGameProps> = ({ sessionID }) => {
   const [showVotes, setShowVotes] = useState<boolean>(false);
 
   const createSessionUser = async () => {
-    const profile = await supabase
-      .from<Profiles>(ProfilesTable)
-      .select("*")
-      .eq("id", user?.id!)
-      .single();
+    const profile = await supabase.from(ProfilesTable).select("*").eq("id", user?.id!).single();
 
     const { data, error } = await supabase
-      .from<ScrumPokerSessionUser>(ScrumPokerSessionUserTable)
+      .from(ScrumPokerSessionUserTable)
       .upsert({
-        user_id: user?.id,
+        user_id: user?.id!,
         session_id: sessionID!,
-        user_full_name: profile.data?.full_name,
+        user_full_name: profile.data?.full_name!,
       })
+      .select()
       .single();
 
     if (error) {
@@ -50,12 +46,12 @@ const ScrumPokerGame: React.FC<ScrumPokerGameProps> = ({ sessionID }) => {
       return;
     }
 
-    setCurrentUserSession(data);
+    setCurrentUserSession(data as ScrumPokerSessionUser);
   };
 
   const resetGame = async () => {
     const { error } = await supabase
-      .from<ScrumPokerSessionUser>(ScrumPokerSessionUserTable)
+      .from(ScrumPokerSessionUserTable)
       .update({
         is_voted: false,
         vote: "0",

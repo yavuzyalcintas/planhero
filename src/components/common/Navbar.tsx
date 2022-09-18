@@ -78,13 +78,9 @@ const NavbarMinimal: React.FC = () => {
   ));
 
   const getProfile = async () => {
-    const profile = await supabase
-      .from<Profiles>(ProfilesTable)
-      .select("*")
-      .eq("id", user?.id!)
-      .single();
+    const profile = await supabase.from(ProfilesTable).select("*").eq("id", user?.id!).single();
 
-    setProfile(profile.data);
+    setProfile(profile.data as Profiles);
   };
 
   const logout = async () => {
