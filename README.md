@@ -12,4 +12,7 @@
 You need to create migration file when you have some db changes
  Detailed info coming soon
  
+supabase gen types typescript --local > src/models/DatabaseDefinitions.ts
+
+
 
