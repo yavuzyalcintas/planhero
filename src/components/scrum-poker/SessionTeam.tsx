@@ -28,7 +28,7 @@ const SessionTeam: React.FC<SessionTeamProps> = ({ sessionID, currentUserSession
         (payload) => {
           console.log("INSERT", payload);
           setSessionUserVotes((current) => {
-            return [...current, payload.record];
+            return [...current, payload.new];
           });
         }
       )
@@ -39,15 +39,16 @@ const SessionTeam: React.FC<SessionTeamProps> = ({ sessionID, currentUserSession
         (payload) => {
           console.log("UPDATE", payload);
           setSessionUserVotes((current) => {
-            let currentUser = current.find((w) => w.user_id === payload.record.user_id)!;
-            currentUser.vote = payload.record.vote;
-            currentUser.is_voted = payload.record.is_voted;
+            let currentUser = current.find((w) => w.user_id === payload.new.user_id)!;
+            currentUser.vote = payload.new.vote;
+            currentUser.is_voted = payload.new.is_voted;
 
-            return [...current.filter((w) => w.user_id !== payload.record.user_id), currentUser];
+            return [...current.filter((w) => w.user_id !== payload.new.user_id), currentUser];
           });
         }
-      )
-      .subscribe();
+      );
+
+    sessionUsersSub.subscribe();
 
     return () => {
       sessionUsersSub.unsubscribe();

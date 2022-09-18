@@ -1,5 +1,5 @@
 import type { User } from "@supabase/supabase-js";
-import React from "react";
+import React, { useEffect } from "react";
 import { createContext, useContext, useState } from "react";
 
 import { supabase } from "./supabase";
@@ -18,16 +18,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 export const useAuth = () => useContext(authContext);
 
 function useProvideAuth() {
-  const [user, setUser] = useState<User | null>(() => {
-    let localUser = JSON.parse(localStorage.getItem("supabase.auth.token")!)?.currentSession
-      ?.user as User;
+  const [user, setUser] = useState<User | null>(null);
 
-    if (!localUser) {
-      localUser = JSON.parse(localStorage.getItem("sb-localhost-auth-token")!)?.user as User;
-    }
-
-    return localUser;
-  });
+  useEffect(() => {
+    supabase.auth.getSession().then((resp) => {
+      setUser(resp.data.session?.user!);
+    });
+  }, []);
 
   supabase.auth.onAuthStateChange((event, session) => {
     if (event === "SIGNED_IN") {
