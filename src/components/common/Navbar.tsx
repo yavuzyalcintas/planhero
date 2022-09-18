@@ -84,7 +84,7 @@ const NavbarMinimal: React.FC = () => {
   };
 
   const logout = async () => {
-    supabase.auth.signOut();
+    await supabase.auth.signOut();
     navigate("/");
   };
 

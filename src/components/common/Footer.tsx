@@ -1,4 +1,4 @@
-import { Anchor, Button, Container, createStyles, Group } from "@mantine/core";
+import { Anchor, Button, Container, createStyles, Group, Text } from "@mantine/core";
 import { GithubIcon } from "@mantine/ds";
 import React from "react";
 
@@ -55,6 +55,7 @@ const FooterSimple: React.FC<FooterSimpleProps> = ({ links }: FooterSimpleProps)
     <div className={classes.footer}>
       <Container className={classes.inner}>
         <Logo />
+        <Text size="xs">© {new Date().getFullYear()} PlanHero. All rights reserved</Text>
         <Group className={classes.links}>
           {items}
           <Button
