@@ -5,7 +5,7 @@ import { HeroTitle } from "../components/HeroTitle";
 import { useAuth } from "../utilities/authProvider";
 
 const HomePage: React.FC = () => {
-  const user = useAuth();
+  const user = useSession();
 
   return (
     <>

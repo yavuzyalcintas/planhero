@@ -4,8 +4,8 @@ import { IconDeviceGamepad, IconHome2, IconLogout, IconMessages } from "@tabler/
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { useSession } from "../../hooks/useSession";
 import { Profiles, ProfilesTable } from "../../models/supabaseEntities";
-import { useAuth } from "../../utilities/authProvider";
 import { supabase } from "../../utilities/supabase";
 import Logo from "./Logo";
 
@@ -63,7 +63,7 @@ const NavbarMinimal: React.FC = () => {
   // const [active, setActive] = useState(0);
   const [profile, setProfile] = useState<Profiles | null>(null);
   const navigate = useNavigate();
-  const user = useAuth();
+  const user = useSession();
 
   const links = menuItems.map((link) => (
     <NavbarLink

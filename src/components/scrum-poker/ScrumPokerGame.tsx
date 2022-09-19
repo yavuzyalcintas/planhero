@@ -3,12 +3,12 @@ import { showNotification } from "@mantine/notifications";
 import { IconCheck, IconPlayerStop, IconRepeat } from "@tabler/icons";
 import React, { useEffect, useState } from "react";
 
+import { useSession } from "../../hooks/useSession";
 import {
   ProfilesTable,
   ScrumPokerSessionUser,
   ScrumPokerSessionUserTable,
 } from "../../models/supabaseEntities";
-import { useAuth } from "../../utilities/authProvider";
 import { supabase } from "../../utilities/supabase";
 import ScrumPokerCards from "./ScrumPokerCards";
 import SessionTeam from "./SessionTeam";
@@ -18,7 +18,7 @@ type ScrumPokerGameProps = {
 };
 
 const ScrumPokerGame: React.FC<ScrumPokerGameProps> = ({ sessionID }) => {
-  const user = useAuth();
+  const user = useSession();
   const [currentUserSession, setCurrentUserSession] = useState<ScrumPokerSessionUser | undefined>(
     undefined
   );
@@ -69,8 +69,10 @@ const ScrumPokerGame: React.FC<ScrumPokerGameProps> = ({ sessionID }) => {
   };
 
   useEffect(() => {
-    createSessionUser();
-  }, []);
+    if (user) {
+      createSessionUser();
+    }
+  }, [user]);
 
   return (
     <Group position="center" grow>

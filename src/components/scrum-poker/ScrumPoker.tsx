@@ -4,14 +4,14 @@ import { showNotification } from "@mantine/notifications";
 import React from "react";
 import { useEffect, useState } from "react";
 
+import { useSession } from "../../hooks/useSession";
 import { ScrumPokerSession, ScrumPokerSessionTable } from "../../models/supabaseEntities";
-import { useAuth } from "../../utilities/authProvider";
 import { supabase } from "../../utilities/supabase";
 import SessionCard from "./SessionCard";
 
 const ScrumPoker: React.FC = () => {
   const [sessions, setSesions] = useState<ScrumPokerSession[]>();
-  const user = useAuth();
+  const user = useSession();
   const form = useForm({
     initialValues: {
       sessionName: "",
