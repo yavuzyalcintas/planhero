@@ -2,18 +2,22 @@ import type { ReactNode } from "react";
 import React, { useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 
-import { useSession } from "../hooks/useSession";
+import { useAuth } from "../utilities/authProvider";
 
 type AuthGuardProps = {
   children: ReactNode;
 };
 
 const AuthGuard: React.FC<AuthGuardProps> = ({ children }: AuthGuardProps) => {
-  const user = useSession();
+  const { user, isLoading } = useAuth();
 
   const { pathname } = useLocation();
 
   const [requestedLocation, setRequestedLocation] = useState<string | undefined>(undefined);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   if (!user) {
     if (pathname !== requestedLocation) {

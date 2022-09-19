@@ -1,9 +1,9 @@
 import { Card, Center, createStyles, Grid, Text } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
-import { useSession } from "../../hooks/useSession";
 import { ScrumPokerSessionUser, ScrumPokerSessionUserTable } from "../../models/supabaseEntities";
+import { useAuth } from "../../utilities/authProvider";
 import { supabase } from "../../utilities/supabase";
 
 const useStyles = createStyles((theme) => ({
@@ -37,12 +37,18 @@ const useStyles = createStyles((theme) => ({
 interface ScrumPokerCardsProps {
   sessionID: string;
   currentUserSession?: ScrumPokerSessionUser;
+  setSelectedVote: React.Dispatch<React.SetStateAction<string>>;
+  selectedVote: string;
 }
 
-const ScrumPokerCards: React.FC<ScrumPokerCardsProps> = ({ sessionID, currentUserSession }) => {
+const ScrumPokerCards: React.FC<ScrumPokerCardsProps> = ({
+  sessionID,
+  currentUserSession,
+  setSelectedVote,
+  selectedVote,
+}) => {
   const { classes, cx } = useStyles();
-  const user = useSession();
-  const [selectedVote, setSelectedVote] = useState<string>("0");
+  const { user } = useAuth();
 
   const setVote = async (vote: string) => {
     const { error } = await supabase

@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 
 import FooterSimple from "./components/common/Footer";
 import NavbarMinimal from "./components/common/Navbar";
+import AuthGuard from "./guards/AuthGuard";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
@@ -61,11 +62,39 @@ function App() {
           {/* Your application here */}
 
           <Routes>
-            <Route path="/scrum-poker" element={<ScrumPokerHomePage />} />
-            <Route path="/scrum-poker/:sessionID" element={<ScrumPokerPage />} />
-            <Route path="/retro" element={<RetroPage />} />
+            <Route
+              path="/scrum-poker"
+              element={
+                <AuthGuard>
+                  <ScrumPokerHomePage />
+                </AuthGuard>
+              }
+            />
+            <Route
+              path="/scrum-poker/:sessionID"
+              element={
+                <AuthGuard>
+                  <ScrumPokerPage />
+                </AuthGuard>
+              }
+            />
+            <Route
+              path="/retro"
+              element={
+                <AuthGuard>
+                  <RetroPage />
+                </AuthGuard>
+              }
+            />
 
-            <Route path="/p/:userID" element={<ProfilePage />} />
+            <Route
+              path="/p/:userID"
+              element={
+                <AuthGuard>
+                  <ProfilePage />
+                </AuthGuard>
+              }
+            />
 
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />

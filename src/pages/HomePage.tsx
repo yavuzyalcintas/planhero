@@ -2,10 +2,10 @@ import React from "react";
 
 import PageHeader from "../components/common/PageHeader";
 import { HeroTitle } from "../components/HeroTitle";
-import { useSession } from "../hooks/useSession";
+import { useAuth } from "../utilities/authProvider";
 
 const HomePage: React.FC = () => {
-  const user = useSession();
+  const { user } = useAuth();
 
   return (
     <>
