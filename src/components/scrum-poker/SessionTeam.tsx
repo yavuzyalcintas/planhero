@@ -26,7 +26,7 @@ const SessionTeam: React.FC<SessionTeamProps> = ({ sessionID, currentUserSession
         { event: "INSERT", schema: "public", table: ScrumPokerSessionUserTable },
         // @ts-ignore
         (payload) => {
-          console.log("INSERT", payload);
+          //console.log("INSERT", payload);
           setSessionUserVotes((current) => {
             return [...current, payload.new];
           });
@@ -37,7 +37,7 @@ const SessionTeam: React.FC<SessionTeamProps> = ({ sessionID, currentUserSession
         { event: "UPDATE", schema: "public", table: ScrumPokerSessionUserTable },
         // @ts-ignore
         (payload) => {
-          console.log("UPDATE", payload);
+          //console.log("UPDATE", payload);
           setSessionUserVotes((current) => {
             let currentUser = current.find((w) => w.user_id === payload.new.user_id)!;
             currentUser.vote = payload.new.vote;
