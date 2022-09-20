@@ -1,10 +1,11 @@
 import { Button, Center, Group } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
-import { IconCheck, IconPlayerStop, IconRepeat } from "@tabler/icons";
+import { IconEye, IconEyeOff, IconRepeat } from "@tabler/icons";
 import React, { useEffect, useState } from "react";
 
 import {
   ProfilesTable,
+  ScrumPokerSessionTable,
   ScrumPokerSessionUser,
   ScrumPokerSessionUserTable,
 } from "../../models/supabaseEntities";
@@ -24,6 +25,7 @@ const ScrumPokerGame: React.FC<ScrumPokerGameProps> = ({ sessionID }) => {
   );
   const [showVotes, setShowVotes] = useState<boolean>(false);
   const [selectedVote, setSelectedVote] = useState<string>("0");
+  const [scrumMaster, setScrumMaster] = useState<string | null>(null);
 
   const createSessionUser = async () => {
     const profile = await supabase.from(ProfilesTable).select("*").eq("id", user?.id!).single();
@@ -68,7 +70,7 @@ const ScrumPokerGame: React.FC<ScrumPokerGameProps> = ({ sessionID }) => {
       return;
     }
 
-    const channel = supabase.channel("scrum-poker-actions", {
+    const channel = supabase.channel(`scrum-poker-actions:${sessionID}`, {
       configs: {
         broadcast: { ack: true },
       },
@@ -77,19 +79,61 @@ const ScrumPokerGame: React.FC<ScrumPokerGameProps> = ({ sessionID }) => {
     // @ts-ignore
     channel.subscribe(async (status) => {
       if (status === "SUBSCRIBED") {
-        // now you can start broadcasting messages
-        // sending a new message every second
-
-        const status = await channel.send({
+        await channel.send({
           type: "broadcast",
           event: "reset",
-          payload: { x: Math.random(), y: Math.random() },
+          //payload: { x: Math.random(), y: Math.random() },
         });
-        console.log("Send Event: ", status);
         setSelectedVote("0");
+        setShowVotes(false);
       }
     });
   };
+
+  const toggleVoteVisibilty = async () => {
+    const channel = supabase.channel(`scrum-poker-actions:${sessionID}`, {
+      configs: {
+        broadcast: { ack: true },
+      },
+    });
+
+    // @ts-ignore
+    channel.subscribe(async (status) => {
+      if (status === "SUBSCRIBED") {
+        await channel.send({
+          type: "broadcast",
+          event: "toggle-vote-visibilty",
+          //payload: { x: Math.random(), y: Math.random() },
+        });
+        setShowVotes(!showVotes);
+      }
+    });
+  };
+
+  const setScrumMasterData = async () => {
+    if (!user) return;
+
+    const { data, error } = await supabase
+      .from(ScrumPokerSessionTable)
+      .select()
+      .eq("id", sessionID)
+      .single();
+
+    if (error) {
+      showNotification({
+        title: "Scrum Master Error",
+        message: error.message,
+        color: "red",
+      });
+      return;
+    }
+
+    if (data) setScrumMaster(data.created_by);
+  };
+
+  useEffect(() => {
+    setScrumMasterData();
+  }, []);
 
   useEffect(() => {
     if (user) {
@@ -98,19 +142,20 @@ const ScrumPokerGame: React.FC<ScrumPokerGameProps> = ({ sessionID }) => {
   }, [user]);
 
   useEffect(() => {
-    // use the same channel name as the client broadcasting the message is using
-    const channel = supabase.channel("scrum-poker-actions");
+    const channel = supabase.channel(`scrum-poker-actions:${sessionID}`);
 
     // listen to broadcasts
     channel
       // @ts-ignore
-      .on("broadcast", { event: "location" }, (payload) => {
-        console.log("reset", payload);
+      .on("broadcast", { event: "reset" }, () => {
         setSelectedVote("0");
+        setShowVotes(false);
+      }) // @ts-ignore
+      .on("broadcast", { event: "toggle-vote-visibilty" }, () => {
+        setShowVotes(!showVotes);
       }) // @ts-ignore
       .subscribe(async (status) => {
         if (status === "SUBSCRIBED") {
-          console.log("Listen Event: ", status);
           // your callback function will now be called with the received messages
         }
       });
@@ -129,36 +174,38 @@ const ScrumPokerGame: React.FC<ScrumPokerGameProps> = ({ sessionID }) => {
         selectedVote={selectedVote}
       />
       <div style={{ minWidth: 250, maxWidth: 750 }}>
-        <Center>
-          <Button.Group>
-            <Button
-              size="lg"
-              variant="outline"
-              color="cyan"
-              leftIcon={<IconRepeat size={14} />}
-              onClick={() => resetGame()}
-            >
-              Reset Game
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              color="green"
-              leftIcon={<IconCheck size={14} />}
-              onClick={() => setShowVotes(!showVotes)}
-            >
-              {showVotes ? "Hide" : "Show"} Votes
-            </Button>
-            <Button size="lg" variant="outline" color="red" leftIcon={<IconPlayerStop size={14} />}>
-              Finish Game
-            </Button>
-          </Button.Group>
-        </Center>
+        {user?.id == scrumMaster && (
+          <Center>
+            <Button.Group>
+              <Button
+                size="lg"
+                variant="outline"
+                color="cyan"
+                leftIcon={<IconRepeat size={14} />}
+                disabled={!showVotes}
+                onClick={() => resetGame()}
+              >
+                Reset Game
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                color="green"
+                disabled={showVotes}
+                leftIcon={showVotes ? <IconEyeOff size={14} /> : <IconEye size={14} />}
+                onClick={() => toggleVoteVisibilty()}
+              >
+                {showVotes ? "Hide" : "Show"} Votes
+              </Button>
+            </Button.Group>
+          </Center>
+        )}
 
         <SessionTeam
           sessionID={sessionID}
           currentUserSession={currentUserSession}
           showVotes={showVotes}
+          scrumMaster={scrumMaster!}
         />
       </div>
     </Group>

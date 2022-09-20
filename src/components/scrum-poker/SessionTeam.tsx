@@ -1,5 +1,6 @@
-import { Group, Text } from "@mantine/core";
+import { Center, Group, Text } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
+import { IconCrown } from "@tabler/icons";
 import React, { useEffect, useState } from "react";
 
 import { ScrumPokerSessionUser, ScrumPokerSessionUserTable } from "../../models/supabaseEntities";
@@ -9,9 +10,15 @@ interface SessionTeamProps {
   sessionID: string;
   currentUserSession?: ScrumPokerSessionUser;
   showVotes: boolean;
+  scrumMaster: string;
 }
 
-const SessionTeam: React.FC<SessionTeamProps> = ({ sessionID, currentUserSession, showVotes }) => {
+const SessionTeam: React.FC<SessionTeamProps> = ({
+  sessionID,
+  currentUserSession,
+  showVotes,
+  scrumMaster,
+}) => {
   const [sessionUserVotes, setSessionUserVotes] = useState<ScrumPokerSessionUser[]>([]);
 
   useEffect(() => {
@@ -23,10 +30,14 @@ const SessionTeam: React.FC<SessionTeamProps> = ({ sessionID, currentUserSession
       .channel(`public:${ScrumPokerSessionUserTable}:session_id=eq.${sessionID}`)
       .on(
         "postgres_changes",
-        { event: "INSERT", schema: "public", table: ScrumPokerSessionUserTable },
+        {
+          event: "INSERT",
+          schema: "public",
+          table: ScrumPokerSessionUserTable,
+          filter: `session_id=eq.${sessionID}`,
+        },
         // @ts-ignore
         (payload) => {
-          //console.log("INSERT", payload);
           setSessionUserVotes((current) => {
             return [...current, payload.new];
           });
@@ -34,10 +45,14 @@ const SessionTeam: React.FC<SessionTeamProps> = ({ sessionID, currentUserSession
       )
       .on(
         "postgres_changes",
-        { event: "UPDATE", schema: "public", table: ScrumPokerSessionUserTable },
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: ScrumPokerSessionUserTable,
+          filter: `session_id=eq.${sessionID}`,
+        },
         // @ts-ignore
         (payload) => {
-          //console.log("UPDATE", payload);
           setSessionUserVotes((current) => {
             let currentUser = current.find((w) => w.user_id === payload.new.user_id)!;
             currentUser.vote = payload.new.vote;
@@ -85,7 +100,12 @@ const SessionTeam: React.FC<SessionTeamProps> = ({ sessionID, currentUserSession
         .map((member, idx) => (
           <Group key={idx} position="apart">
             <Text color={member.is_voted ? "green" : ""} weight={800}>
-              {member?.user_full_name}
+              <Center>
+                {member?.user_full_name}
+                {scrumMaster == member.user_id && (
+                  <IconCrown color="orange" size={20} style={{ marginLeft: 5 }} />
+                )}
+              </Center>
             </Text>
             <Text size={24} weight={800}>
               {showVotes ? member.vote : "?"}

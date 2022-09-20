@@ -36,6 +36,8 @@ const ScrumPoker: React.FC = () => {
       return;
     }
 
+    form.setFieldValue("sessionName", "");
+
     setSesions([
       ...(sessions || []),
       {
