@@ -2,14 +2,16 @@ import { Center, Grid, Stack } from "@mantine/core";
 import React from "react";
 
 import { AuthenticationForm } from "../components/auth/AuthenticationForm";
-import Logo from "../components/common/Logo";
+import Logo, { LogoSize, LogoType } from "../components/common/Logo";
 
 const LoginPage: React.FC = () => (
   <Center>
     <Grid style={{ width: 600 }}>
       <Grid.Col>
-        <Stack mt={150}>
-          <Logo fontSize={60} />
+        <Stack>
+          <Center>
+            <Logo size={LogoSize.Medium} type={LogoType.Full} />
+          </Center>
           <AuthenticationForm />
         </Stack>
       </Grid.Col>

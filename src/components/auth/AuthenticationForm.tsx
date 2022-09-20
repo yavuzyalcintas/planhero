@@ -73,7 +73,7 @@ export function AuthenticationForm(props: PaperProps) {
     }
 
     if (type === "login") {
-      const { error, data } = await supabase.auth.signInWithPassword({
+      const { error } = await supabase.auth.signInWithPassword({
         email: values.email,
         password: values.password,
       });
@@ -84,11 +84,10 @@ export function AuthenticationForm(props: PaperProps) {
           message: error.message,
           color: "red",
         });
+        return;
       }
 
-      if (data) {
-        navigate("/");
-      }
+      navigate("/");
     }
   };
 

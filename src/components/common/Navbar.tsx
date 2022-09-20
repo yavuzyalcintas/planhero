@@ -2,12 +2,12 @@ import { Center, createStyles, Navbar, Stack, Text, Tooltip, UnstyledButton } fr
 import { IconUserCircle, TablerIcon } from "@tabler/icons";
 import { IconDeviceGamepad, IconHome2, IconLogout, IconMessages } from "@tabler/icons";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { Profiles, ProfilesTable } from "../../models/supabaseEntities";
 import { useAuth } from "../../utilities/authProvider";
 import { supabase } from "../../utilities/supabase";
-import Logo from "./Logo";
+import Logo, { LogoSize, LogoType } from "./Logo";
 
 const useStyles = createStyles((theme) => ({
   link: {
@@ -95,9 +95,11 @@ const NavbarMinimal: React.FC = () => {
   return (
     <>
       {user && (
-        <Navbar style={{ position: "fixed" }} width={{ base: 120 }} p="md">
+        <Navbar style={{ position: "fixed", paddingTop: 0 }} width={{ base: 120 }} p="md">
           <Center mt={25}>
-            <Logo />
+            <Link to="/">
+              <Logo type={LogoType.Full} size={LogoSize.Small} />
+            </Link>
           </Center>
           <Navbar.Section grow mt={70}>
             <Stack justify="center" spacing={0}>

@@ -2,7 +2,7 @@ import { Anchor, Button, Container, createStyles, Group, Text } from "@mantine/c
 import { GithubIcon } from "@mantine/ds";
 import React from "react";
 
-import Logo from "./Logo";
+import Logo, { LogoSize, LogoType } from "./Logo";
 
 const useStyles = createStyles((theme) => ({
   footer: {
@@ -54,7 +54,7 @@ const FooterSimple: React.FC<FooterSimpleProps> = ({ links }: FooterSimpleProps)
   return (
     <div className={classes.footer}>
       <Container className={classes.inner}>
-        <Logo />
+        <Logo size={LogoSize.Medium} type={LogoType.Text} />
         <Text size="xs">© {new Date().getFullYear()} PlanHero. All rights reserved</Text>
         <Group className={classes.links}>
           {items}
