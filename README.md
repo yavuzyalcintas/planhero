@@ -1,3 +1,4 @@
+![PlanHero](plan-hero.png)
 # Plan Hero
 
 - Install Supabase CLI
