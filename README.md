@@ -1,5 +1,4 @@
-![Vercel](https://vercelbadge.vercel.app/api/yavuzyalcintas/planhero)
-
+![PlanHero](plan-hero.png)
 # Plan Hero
 
 - Install Supabase CLI
