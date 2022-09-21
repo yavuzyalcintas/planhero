@@ -3,7 +3,11 @@ import { showNotification } from "@mantine/notifications";
 import { IconCrown } from "@tabler/icons";
 import React, { useEffect, useState } from "react";
 
-import { ScrumPokerSessionUser, ScrumPokerSessionUserTable } from "../../models/supabaseEntities";
+import {
+  ProfilesTable,
+  ScrumPokerSessionUser,
+  ScrumPokerSessionUserTable,
+} from "../../models/supabaseEntities";
 import { supabase } from "../../utilities/supabase";
 
 interface SessionTeamProps {
@@ -60,6 +64,32 @@ const SessionTeam: React.FC<SessionTeamProps> = ({
 
             return [...current.filter((w) => w.user_id !== payload.new.user_id), currentUser];
           });
+        }
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "DELETE",
+          schema: "public",
+          table: ScrumPokerSessionUserTable,
+          filter: `session_id=eq.${sessionID}`,
+        },
+        // @ts-ignore
+        async (payload) => {
+          const { data } = await supabase
+            .from(ProfilesTable)
+            .select("*")
+            .eq("id", payload.old.user_id)
+            .single();
+
+          showNotification({
+            message: `${data?.full_name} left from the channel!`,
+            color: "red",
+          });
+
+          setSessionUserVotes((current) =>
+            current.filter((w) => w.user_id !== payload.old.user_id)
+          );
         }
       );
 

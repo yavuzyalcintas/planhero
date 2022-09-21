@@ -1,6 +1,6 @@
-import { Button, Center, Group } from "@mantine/core";
+import { Button, Center, CopyButton, Grid, Group } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
-import { IconEye, IconEyeOff, IconRepeat } from "@tabler/icons";
+import { IconEye, IconEyeOff, IconLink, IconRepeat } from "@tabler/icons";
 import React, { useEffect, useState } from "react";
 
 import {
@@ -131,9 +131,22 @@ const ScrumPokerGame: React.FC<ScrumPokerGameProps> = ({ sessionID }) => {
     if (data) setScrumMaster(data.created_by);
   };
 
-  useEffect(() => {
-    setScrumMasterData();
-  }, []);
+  const removeUserFromSession = async () => {
+    const { error } = await supabase
+      .from(ScrumPokerSessionUserTable)
+      .delete()
+      .eq("session_id", sessionID)
+      .eq("user_id", user?.id);
+
+    if (error) {
+      showNotification({
+        title: "Remove User Session Error",
+        message: error.message,
+        color: "red",
+      });
+      return;
+    }
+  };
 
   useEffect(() => {
     if (user) {
@@ -142,6 +155,7 @@ const ScrumPokerGame: React.FC<ScrumPokerGameProps> = ({ sessionID }) => {
   }, [user]);
 
   useEffect(() => {
+    setScrumMasterData();
     const channel = supabase.channel(`scrum-poker-actions:${sessionID}`);
 
     // listen to broadcasts
@@ -162,53 +176,72 @@ const ScrumPokerGame: React.FC<ScrumPokerGameProps> = ({ sessionID }) => {
 
     return () => {
       channel.unsubscribe();
+      removeUserFromSession();
     };
   }, []);
 
   return (
-    <Group position="center" grow>
-      <ScrumPokerCards
-        sessionID={sessionID}
-        currentUserSession={currentUserSession}
-        setSelectedVote={setSelectedVote}
-        selectedVote={selectedVote}
-      />
-      <div style={{ minWidth: 250, maxWidth: 750 }}>
-        {user?.id == scrumMaster && (
-          <Center>
-            <Button.Group>
+    <>
+      <Grid justify={"flex-end"} mb={5}>
+        <Grid.Col span={1}>
+          <CopyButton value={window.location.href}>
+            {({ copied, copy }) => (
               <Button
-                size="lg"
-                variant="outline"
-                color="cyan"
-                leftIcon={<IconRepeat size={14} />}
-                disabled={!showVotes}
-                onClick={() => resetGame()}
+                leftIcon={<IconLink size={30} />}
+                color={copied ? "yellow" : "cyan"}
+                onClick={copy}
               >
-                Reset Game
+                {copied ? "Link Copied" : "Invite"}
               </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                color="green"
-                disabled={showVotes}
-                leftIcon={showVotes ? <IconEyeOff size={14} /> : <IconEye size={14} />}
-                onClick={() => toggleVoteVisibilty()}
-              >
-                {showVotes ? "Hide" : "Show"} Votes
-              </Button>
-            </Button.Group>
-          </Center>
-        )}
+            )}
+          </CopyButton>
+        </Grid.Col>
+      </Grid>
 
-        <SessionTeam
+      <Group position="center" grow>
+        <ScrumPokerCards
           sessionID={sessionID}
           currentUserSession={currentUserSession}
-          showVotes={showVotes}
-          scrumMaster={scrumMaster!}
+          setSelectedVote={setSelectedVote}
+          selectedVote={selectedVote}
         />
-      </div>
-    </Group>
+        <div style={{ minWidth: 250, maxWidth: 750 }}>
+          {user?.id == scrumMaster && (
+            <Center>
+              <Button.Group>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  color="cyan"
+                  leftIcon={<IconRepeat size={14} />}
+                  disabled={!showVotes}
+                  onClick={() => resetGame()}
+                >
+                  Reset Game
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  color="green"
+                  disabled={showVotes}
+                  leftIcon={showVotes ? <IconEyeOff size={14} /> : <IconEye size={14} />}
+                  onClick={() => toggleVoteVisibilty()}
+                >
+                  {showVotes ? "Hide" : "Show"} Votes
+                </Button>
+              </Button.Group>
+            </Center>
+          )}
+
+          <SessionTeam
+            sessionID={sessionID}
+            currentUserSession={currentUserSession}
+            showVotes={showVotes}
+            scrumMaster={scrumMaster!}
+          />
+        </div>
+      </Group>
+    </>
   );
 };
 
