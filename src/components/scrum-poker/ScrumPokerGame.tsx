@@ -187,8 +187,8 @@ const ScrumPokerGame: React.FC<ScrumPokerGameProps> = ({ sessionID }) => {
           <CopyButton value={window.location.href}>
             {({ copied, copy }) => (
               <Button
-                leftIcon={<IconLink size={30} />}
-                color={copied ? "yellow" : "cyan"}
+                leftIcon={<IconLink size={18} />}
+                color={copied ? "lime" : "gray"}
                 onClick={copy}
                 sx={{ marginRight: "25px" }}
               >
