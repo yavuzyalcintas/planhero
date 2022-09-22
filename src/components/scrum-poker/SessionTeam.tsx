@@ -83,8 +83,8 @@ const SessionTeam: React.FC<SessionTeamProps> = ({
             .single();
 
           showNotification({
-            message: `${data?.full_name} left from the channel!`,
-            color: "red",
+            message: `${data?.full_name} left the game.`,
+            color: "cyan",
           });
 
           setSessionUserVotes((current) =>
