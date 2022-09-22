@@ -182,14 +182,15 @@ const ScrumPokerGame: React.FC<ScrumPokerGameProps> = ({ sessionID }) => {
 
   return (
     <>
-      <Grid justify={"flex-end"} mb={5}>
-        <Grid.Col span={1}>
+      <Grid mb={5}>
+        <Grid.Col sx={{ textAlign: "right" }}>
           <CopyButton value={window.location.href}>
             {({ copied, copy }) => (
               <Button
                 leftIcon={<IconLink size={30} />}
                 color={copied ? "yellow" : "cyan"}
                 onClick={copy}
+                sx={{ marginRight: "25px" }}
               >
                 {copied ? "Link Copied" : "Invite"}
               </Button>
