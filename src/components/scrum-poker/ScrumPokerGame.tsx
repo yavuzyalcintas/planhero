@@ -3,6 +3,7 @@ import { showNotification } from "@mantine/notifications";
 import { IconEye, IconEyeOff, IconLink, IconRepeat } from "@tabler/icons";
 import React, { useEffect, useState } from "react";
 
+import { getQueryBy } from "../../client/supabase";
 import {
   ProfilesTable,
   ScrumPokerSessionTable,
@@ -113,11 +114,8 @@ const ScrumPokerGame: React.FC<ScrumPokerGameProps> = ({ sessionID }) => {
   const setScrumMasterData = async () => {
     if (!user) return;
 
-    const { data, error } = await supabase
-      .from(ScrumPokerSessionTable)
-      .select()
-      .eq("id", sessionID)
-      .single();
+    // @ts-ignore
+    const { data, error } = getQueryBy(ScrumPokerSessionTable, "id", sessionID);
 
     if (error) {
       showNotification({
