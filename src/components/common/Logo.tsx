@@ -17,6 +17,7 @@ export enum LogoType {
 }
 
 export enum LogoSize {
+  XSmall = 80,
   Small = 110,
   Medium = 280,
   Large = 500,
