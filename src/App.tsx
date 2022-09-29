@@ -7,6 +7,7 @@ import AuthGuard from "./guards/AuthGuard";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
+import RetroHomePage from "./pages/RetroHomePage";
 import RetroPage from "./pages/RetroPage";
 import ScrumPokerHomePage from "./pages/ScrumPokerHomePage";
 import ScrumPokerPage from "./pages/ScrumPokerPage";
@@ -80,6 +81,14 @@ function App() {
             />
             <Route
               path="/retro"
+              element={
+                <AuthGuard>
+                  <RetroHomePage />
+                </AuthGuard>
+              }
+            />
+            <Route
+              path="/retro/:sessionID"
               element={
                 <AuthGuard>
                   <RetroPage />

@@ -79,7 +79,7 @@ const ScrumPokerCards: React.FC<ScrumPokerCardsProps> = ({
 
   return (
     <Grid style={{ minWidth: 750 }}>
-      {["1", "2", "3", "5", "8", "13", "21", "34", "55"].map((vote, index) => (
+      {["?", "1", "2", "3", "5", "8", "13", "21", "34", "55"].map((vote, index) => (
         <Grid.Col span={3} key={index} style={{ maxWidth: 500, minWidth: 250 }}>
           <Card
             radius="md"

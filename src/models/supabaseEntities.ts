@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 export const ProfilesTable = "profiles";
 export interface Profiles {
   id: string;
@@ -25,4 +26,41 @@ export interface ScrumPokerSessionUser {
   vote?: string;
   is_voted?: boolean;
   user_full_name: string;
+}
+
+export const RetroSessionTable = "retro_session";
+export interface RetroSession {
+  id: string;
+  name: string;
+  is_completed: boolean;
+  created_by: string;
+  created_at?: string;
+}
+
+export const RetroSessionActionsTable = "retro_session_actions";
+export interface RetroSessionActions {
+  id: string;
+  session_id: string;
+  user_id: string;
+  message: string;
+  is_completed?: boolean;
+  created_at?: string;
+}
+
+export const RetroSessionMessagesTable = "retro_session_messages";
+export interface RetroSessionMessages {
+  id: string;
+  session_id: string;
+  user_id: string;
+  message: string;
+  type: string;
+  like_count?: number;
+  created_at?: string;
+}
+
+export enum RetroSessionMessageTypes {
+  Start = "start",
+  Stop = "stop",
+  Continue = "continue",
+  Actions = "actions",
 }

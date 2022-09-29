@@ -3,6 +3,84 @@ export type Json = string | number | boolean | null | { [key: string]: Json } | 
 export interface Database {
   public: {
     Tables: {
+      retro_session: {
+        Row: {
+          name: string;
+          created_by: string;
+          id: string;
+          is_completed: boolean;
+          created_at: string | null;
+        };
+        Insert: {
+          name: string;
+          created_by: string;
+          id?: string;
+          is_completed?: boolean;
+          created_at?: string | null;
+        };
+        Update: {
+          name?: string;
+          created_by?: string;
+          id?: string;
+          is_completed?: boolean;
+          created_at?: string | null;
+        };
+      };
+      retro_session_messages: {
+        Row: {
+          user_id: string;
+          type: string;
+          message: string;
+          session_id: string;
+          id: string;
+          like_count: number | null;
+          created_at: string | null;
+        };
+        Insert: {
+          user_id: string;
+          type: string;
+          message: string;
+          session_id: string;
+          id?: string;
+          like_count?: number | null;
+          created_at?: string | null;
+        };
+        Update: {
+          user_id?: string;
+          type?: string;
+          message?: string;
+          session_id?: string;
+          id?: string;
+          like_count?: number | null;
+          created_at?: string | null;
+        };
+      };
+      retro_session_actions: {
+        Row: {
+          session_id: string;
+          user_id: string;
+          message: string;
+          id: string;
+          is_completed: boolean | null;
+          created_at: string | null;
+        };
+        Insert: {
+          session_id: string;
+          user_id: string;
+          message: string;
+          id?: string;
+          is_completed?: boolean | null;
+          created_at?: string | null;
+        };
+        Update: {
+          session_id?: string;
+          user_id?: string;
+          message?: string;
+          id?: string;
+          is_completed?: boolean | null;
+          created_at?: string | null;
+        };
+      };
       profiles: {
         Row: {
           id: string;

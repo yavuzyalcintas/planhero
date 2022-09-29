@@ -138,7 +138,7 @@ const SessionTeam: React.FC<SessionTeamProps> = ({
               </Center>
             </Text>
             <Text size={24} weight={800}>
-              {showVotes ? member.vote : "?"}
+              {showVotes ? member.vote : "-"}
             </Text>
           </Group>
         ))}

@@ -1,16 +1,14 @@
 import { Button, Group, Space, Stack, Text, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { showNotification } from "@mantine/notifications";
-import React from "react";
 import { useEffect, useState } from "react";
 
-import { ScrumPokerSession, ScrumPokerSessionTable } from "../../models/supabaseEntities";
+import { RetroSession } from "../../models/supabaseEntities";
+import { createRetroSession, getRetroSessions } from "../../services/retroService";
 import { useAuth } from "../../utilities/authProvider";
-import { supabase } from "../../utilities/supabase";
 import SessionCard from "../SessionCard";
 
-const ScrumPoker: React.FC = () => {
-  const [sessions, setSesions] = useState<ScrumPokerSession[]>();
+const RetroSessionHome = () => {
+  const [sessions, setSesions] = useState<RetroSession[]>();
   const { user } = useAuth();
   const form = useForm({
     initialValues: {
@@ -20,59 +18,26 @@ const ScrumPoker: React.FC = () => {
 
   // Create new session
   const handleSubmit = async (values: typeof form.values) => {
-    const { data, error } = await supabase
-      .from(ScrumPokerSessionTable)
-      .insert([{ name: values.sessionName, created_by: user?.id! }])
-      .select()
-      .single();
+    const { data, error } = await createRetroSession(values.sessionName, user?.id!);
 
-    if (error) {
-      showNotification({
-        title: "Session Error",
-        message: error.message,
-        color: "red",
-      });
-
-      return;
-    }
+    if (error) return;
 
     form.setFieldValue("sessionName", "");
 
-    setSesions([
-      ...(sessions || []),
-      {
-        id: data.id,
-        name: data.name,
-        created_at: data.created_at!,
-        created_by: data.created_by,
-      },
-    ]);
+    setSesions([...(sessions || []), data as RetroSession]);
   };
 
   const getSessions = async () => {
-    const { data, error } = await supabase
-      .from(ScrumPokerSessionTable)
-      .select()
-      .eq("created_by", user?.id!)
-      .limit(5)
-      .order("created_at", { ascending: false });
+    const { data, error } = await getRetroSessions(user?.id!);
 
-    if (error) {
-      showNotification({
-        title: "Session Error",
-        message: error.message,
-        color: "red",
-      });
+    if (error) return;
 
-      return;
-    }
-
-    setSesions(data as ScrumPokerSession[]);
+    setSesions(data as RetroSession[]);
   };
 
   useEffect(() => {
-    if (user) getSessions();
-  }, [user]);
+    getSessions();
+  }, []);
 
   return (
     <>
@@ -111,4 +76,4 @@ const ScrumPoker: React.FC = () => {
   );
 };
 
-export default ScrumPoker;
+export default RetroSessionHome;
