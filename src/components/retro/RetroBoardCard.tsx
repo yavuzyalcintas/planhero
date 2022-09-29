@@ -1,10 +1,11 @@
-import { ActionIcon, Card, Group, MantineColor, Text, Textarea } from "@mantine/core";
-import { IconArrowRight, IconThumbUp } from "@tabler/icons";
+import { ActionIcon, Card, MantineColor, Text, Textarea } from "@mantine/core";
+import { IconArrowRight } from "@tabler/icons";
 import React, { useState } from "react";
 
 import { RetroSessionMessages } from "../../models/supabaseEntities";
 import { createRetroMessage } from "../../services/retroService";
 import { useAuth } from "../../utilities/authProvider";
+import RetroBoardMessage from "./RetroBoardMessage";
 
 interface RetroBoardCardProps {
   type: string;
@@ -49,6 +50,7 @@ const RetroBoardCard: React.FC<RetroBoardCardProps> = ({
           autosize
           maxRows={3}
           radius="xl"
+          pb={"lg"}
           value={message}
           onChange={(event) => setMessage(event.currentTarget.value)}
           rightSection={
@@ -68,26 +70,9 @@ const RetroBoardCard: React.FC<RetroBoardCardProps> = ({
           }
         />
 
-        {messages &&
-          messages.map((message) => {
-            return (
-              <Group mt="md" pb="xs" position="apart" noWrap key={message.id}>
-                <Text size="sm" color="dimmed" p={10} sx={{ borderRadius: 5 }}>
-                  {message.message}
-                </Text>
-                <ActionIcon
-                  variant="subtle"
-                  radius="xl"
-                  color="cyan"
-                  size="lg"
-                  sx={{ alignSelf: "flex-end" }}
-                >
-                  <Text weight={500}>{message.like_count! > 0 && message.like_count}</Text>
-                  <IconThumbUp size={16} />
-                </ActionIcon>
-              </Group>
-            );
-          })}
+        {(messages || []).map((message) => {
+          return <RetroBoardMessage message={message} key={message.id} />;
+        })}
       </Card>
     </>
   );

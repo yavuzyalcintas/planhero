@@ -28,6 +28,7 @@ import {
   IconFingerprint,
   IconNotification,
 } from "@tabler/icons";
+import { useNavigate } from "react-router-dom";
 
 import Logo, { LogoSize, LogoType } from "./Logo";
 
@@ -128,6 +129,7 @@ export function HeaderMenu() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
   const { classes, theme } = useStyles();
+  const navigate = useNavigate();
 
   const links = mockdata.map((item) => (
     <UnstyledButton className={classes.subLink} key={item.title}>
@@ -211,7 +213,13 @@ export function HeaderMenu() {
           </Group> */}
 
           <Group className={classes.hiddenMobile}>
-            <Button>Log in</Button>
+            <Button
+              onClick={() => {
+                navigate("/login");
+              }}
+            >
+              Log in
+            </Button>
           </Group>
 
           <Burger opened={drawerOpened} onClick={toggleDrawer} className={classes.hiddenDesktop} />
@@ -252,7 +260,13 @@ export function HeaderMenu() {
           <Divider my="sm" color={theme.colorScheme === "dark" ? "dark.5" : "gray.1"} /> */}
 
           <Group position="center" grow pb="xl" px="md">
-            <Button>Log in</Button>
+            <Button
+              onClick={() => {
+                navigate("/login");
+              }}
+            >
+              Log in
+            </Button>
           </Group>
         </ScrollArea>
       </Drawer>

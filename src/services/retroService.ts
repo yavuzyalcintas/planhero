@@ -78,3 +78,60 @@ export const getRetroMessages = async (sessionID: string) => {
 
   return { data, error };
 };
+
+export const updateRetroMessage = async (messageId: string, message: string, userID: string) => {
+  const { data, error } = await supabase
+    .from(RetroSessionMessagesTable)
+    .update({ message })
+    .eq("id", messageId)
+    .eq("user_id", userID)
+    .select("*")
+    .single();
+
+  if (error) {
+    showNotification({
+      title: "Delete Message Error",
+      message: error.message,
+      color: "red",
+    });
+  }
+
+  return { data, error };
+};
+
+export const setRetroMessageType = async (messageId: string, type: string) => {
+  const { data, error } = await supabase
+    .from(RetroSessionMessagesTable)
+    .update({ type })
+    .eq("id", messageId)
+    .select("*")
+    .single();
+
+  if (error) {
+    showNotification({
+      title: "Set Message Type Error",
+      message: error.message,
+      color: "red",
+    });
+  }
+
+  return { data, error };
+};
+
+export const deleteRetroMessage = async (messageId: string, userID: string) => {
+  const { data, error } = await supabase
+    .from(RetroSessionMessagesTable)
+    .delete()
+    .eq("id", messageId)
+    .eq("user_id", userID);
+
+  if (error) {
+    showNotification({
+      title: "Delete Message Error",
+      message: error.message,
+      color: "red",
+    });
+  }
+
+  return { data, error };
+};

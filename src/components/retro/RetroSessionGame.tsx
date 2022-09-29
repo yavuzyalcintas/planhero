@@ -1,8 +1,13 @@
 import { Grid } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 
-import { RetroSessionMessages, RetroSessionMessageTypes } from "../../models/supabaseEntities";
+import {
+  RetroSessionMessages,
+  RetroSessionMessagesTable,
+  RetroSessionMessageTypes,
+} from "../../models/supabaseEntities";
 import { getRetroMessages } from "../../services/retroService";
+import { supabase } from "../../utilities/supabase";
 import RetroBoardCard from "./RetroBoardCard";
 
 interface RetroSessionGameProps {
@@ -23,6 +28,60 @@ const RetroSessionGame: React.FC<RetroSessionGameProps> = ({ sessionID }) => {
 
   useEffect(() => {
     setAllRetroMessages();
+  }, []);
+
+  useEffect(() => {
+    const sessionUsersSub = supabase
+      .channel(`public:${RetroSessionMessagesTable}:session_id=eq.${sessionID}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: RetroSessionMessagesTable,
+          filter: `session_id=eq.${sessionID}`,
+        },
+        // @ts-ignore
+        (payload) => {
+          setRetroMessages((current) => {
+            return [...current, payload.new];
+          });
+        }
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: RetroSessionMessagesTable,
+          filter: `session_id=eq.${sessionID}`,
+        },
+        // @ts-ignore
+        (payload) => {
+          setRetroMessages((current) => {
+            return [...current.filter((w) => w.id !== payload.new.id), payload.new];
+          });
+        }
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "DELETE",
+          schema: "public",
+          table: RetroSessionMessagesTable,
+          filter: `session_id=eq.${sessionID}`,
+        },
+        // @ts-ignore
+        async (payload) => {
+          setRetroMessages((current) => current.filter((w) => w.id !== payload.old.id));
+        }
+      );
+
+    sessionUsersSub.subscribe();
+
+    return () => {
+      sessionUsersSub.unsubscribe();
+    };
   }, []);
 
   return (
