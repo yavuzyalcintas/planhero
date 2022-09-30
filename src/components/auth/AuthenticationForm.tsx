@@ -14,6 +14,7 @@ import {
 import { useForm } from "@mantine/form";
 import { upperFirst, useToggle } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
+import { IconBrandGoogle } from "@tabler/icons";
 import { useNavigate } from "react-router-dom";
 
 import { ProfilesTable } from "../../models/supabaseEntities";
@@ -91,6 +92,21 @@ export function AuthenticationForm(props: PaperProps) {
     }
   };
 
+  const googleSignIn = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+    });
+
+    if (error) {
+      showNotification({
+        title: "Google Login Error",
+        message: error.message,
+        color: "red",
+      });
+      return;
+    }
+  };
+
   return (
     <>
       <Paper radius="md" p="xl" withBorder {...props}>
@@ -99,7 +115,14 @@ export function AuthenticationForm(props: PaperProps) {
         </Text>
 
         <Group grow mb="md" mt="md">
-          {/* <GoogleButton radius='xl'>Google</GoogleButton> */}
+          <Button
+            leftIcon={<IconBrandGoogle />}
+            variant="default"
+            color="gray"
+            onClick={() => googleSignIn()}
+          >
+            Continue with Google
+          </Button>
         </Group>
 
         <Divider label="Or continue with email" labelPosition="center" my="lg" />
