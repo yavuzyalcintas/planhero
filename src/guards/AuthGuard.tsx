@@ -11,7 +11,7 @@ type AuthGuardProps = {
 const AuthGuard: React.FC<AuthGuardProps> = ({ children }: AuthGuardProps) => {
   const { user, isLoading } = useAuth();
 
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
 
   const [requestedLocation, setRequestedLocation] = useState<string | undefined>(undefined);
 
@@ -24,7 +24,7 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }: AuthGuardProps) => {
       setRequestedLocation(pathname);
     }
 
-    return <Navigate to="/login" />;
+    return <Navigate to={"/login?redirectTo=" + pathname + search} />;
   }
 
   if (requestedLocation && pathname !== requestedLocation) {
