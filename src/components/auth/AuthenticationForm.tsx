@@ -17,11 +17,14 @@ import { showNotification } from "@mantine/notifications";
 import { IconBrandGoogle } from "@tabler/icons";
 import { useNavigate } from "react-router-dom";
 
+import { useQuery } from "../../hooks/useQuery";
 import { ProfilesTable } from "../../models/supabaseEntities";
 import { supabase } from "../../utilities/supabase";
 
 export function AuthenticationForm(props: PaperProps) {
   const navigate = useNavigate();
+  const query = useQuery();
+
   const [type, toggle] = useToggle(["login", "register"]);
 
   const form = useForm({
@@ -40,6 +43,8 @@ export function AuthenticationForm(props: PaperProps) {
   });
 
   const handleSubmit = async (values: typeof form.values) => {
+    const redirectTo = query.get("redirectTo");
+
     if (type === "register") {
       const { error, data } = await supabase.auth.signUp({
         email: values.email,
@@ -69,7 +74,7 @@ export function AuthenticationForm(props: PaperProps) {
           return;
         }
 
-        navigate("/");
+        navigate(redirectTo || "/");
       }
     }
 
@@ -88,13 +93,17 @@ export function AuthenticationForm(props: PaperProps) {
         return;
       }
 
-      navigate("/");
+      navigate(redirectTo || "/");
     }
   };
 
   const googleSignIn = async () => {
+    const redirectTo = query.get("redirectTo");
+    const SITE_URL = import.meta.env.VITE_SITE_URL || "";
+
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
+      options: { redirectTo: `${SITE_URL}${redirectTo || ""}` },
     });
 
     if (error) {
