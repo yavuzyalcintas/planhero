@@ -1,6 +1,7 @@
 import type { User } from "@supabase/supabase-js";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
+import { upsertProfile } from "../services/profileService";
 import { supabase } from "../utilities/supabase";
 
 const authContext = createContext<{
@@ -23,6 +24,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const sub = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_IN") {
         setUser(session?.user!);
+
+        if (session?.user.app_metadata.provider === "google") {
+          const userData = session.user.user_metadata;
+          upsertProfile({
+            full_name: userData.full_name,
+            id: session.user.id,
+            avatar_url: userData.avatar_url,
+          });
+        }
       }
 
       if (event === "SIGNED_OUT") {
