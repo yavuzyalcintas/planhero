@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import FooterSimple from "./components/common/Footer";
 import NavbarMinimal from "./components/common/Navbar";
 import AuthGuard from "./guards/AuthGuard";
+import useAnalytics from "./hooks/useAnalytics";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
@@ -13,6 +14,7 @@ import ScrumPokerHomePage from "./pages/ScrumPokerHomePage";
 import ScrumPokerPage from "./pages/ScrumPokerPage";
 
 function App() {
+  useAnalytics();
   return (
     <>
       <MantineProvider
