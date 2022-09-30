@@ -1,13 +1,5 @@
 import { ActionIcon, Group, Menu, Text, Textarea } from "@mantine/core";
-import {
-  IconArrowForward,
-  IconCheck,
-  IconDotsVertical,
-  IconEdit,
-  IconThumbUp,
-  IconTrashX,
-  IconX,
-} from "@tabler/icons";
+import { IconArrowForward, IconCheck, IconDotsVertical, IconEdit, IconTrashX } from "@tabler/icons";
 import React, { useState } from "react";
 
 import { RetroSessionMessages, RetroSessionMessageTypes } from "../../models/supabaseEntities";
@@ -42,7 +34,7 @@ const RetroBoardMessage: React.FC<RetroBoardMessageProps> = ({ message }) => {
   };
 
   return (
-    <Group position="apart" noWrap>
+    <Group position="apart" noWrap pb={"sm"}>
       {editEnabled ? (
         <Textarea
           autosize
@@ -127,7 +119,7 @@ const RetroBoardMessage: React.FC<RetroBoardMessageProps> = ({ message }) => {
           </Menu>
         </ActionIcon>
 
-        <ActionIcon
+        {/* <ActionIcon
           variant="subtle"
           radius="xl"
           size={"lg"}
@@ -136,7 +128,7 @@ const RetroBoardMessage: React.FC<RetroBoardMessageProps> = ({ message }) => {
         >
           <Text weight={500}>{message.like_count! > 0 && message.like_count}</Text>
           <IconThumbUp size={16} />
-        </ActionIcon>
+        </ActionIcon> */}
       </div>
     </Group>
   );
