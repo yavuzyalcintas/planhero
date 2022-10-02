@@ -1,86 +1,14 @@
-export type Json = string | number | boolean | null | { [key: string]: Json } | Json[];
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json }
+  | Json[];
 
 export interface Database {
   public: {
     Tables: {
-      retro_session: {
-        Row: {
-          name: string;
-          created_by: string;
-          id: string;
-          is_completed: boolean;
-          created_at: string | null;
-        };
-        Insert: {
-          name: string;
-          created_by: string;
-          id?: string;
-          is_completed?: boolean;
-          created_at?: string | null;
-        };
-        Update: {
-          name?: string;
-          created_by?: string;
-          id?: string;
-          is_completed?: boolean;
-          created_at?: string | null;
-        };
-      };
-      retro_session_messages: {
-        Row: {
-          user_id: string;
-          type: string;
-          message: string;
-          session_id: string;
-          id: string;
-          like_count: number | null;
-          created_at: string | null;
-        };
-        Insert: {
-          user_id: string;
-          type: string;
-          message: string;
-          session_id: string;
-          id?: string;
-          like_count?: number | null;
-          created_at?: string | null;
-        };
-        Update: {
-          user_id?: string;
-          type?: string;
-          message?: string;
-          session_id?: string;
-          id?: string;
-          like_count?: number | null;
-          created_at?: string | null;
-        };
-      };
-      retro_session_actions: {
-        Row: {
-          session_id: string;
-          user_id: string;
-          message: string;
-          id: string;
-          is_completed: boolean | null;
-          created_at: string | null;
-        };
-        Insert: {
-          session_id: string;
-          user_id: string;
-          message: string;
-          id?: string;
-          is_completed?: boolean | null;
-          created_at?: string | null;
-        };
-        Update: {
-          session_id?: string;
-          user_id?: string;
-          message?: string;
-          id?: string;
-          is_completed?: boolean | null;
-          created_at?: string | null;
-        };
-      };
       profiles: {
         Row: {
           id: string;
@@ -107,58 +35,148 @@ export interface Database {
           full_name?: string;
         };
       };
-      scrum_poker_session: {
+      retro_session: {
         Row: {
-          created_by: string;
-          name: string;
           id: string;
+          name: string;
+          is_completed: boolean;
+          created_by: string;
           created_at: string | null;
         };
         Insert: {
-          created_by: string;
-          name: string;
           id?: string;
+          name: string;
+          is_completed?: boolean;
+          created_by: string;
           created_at?: string | null;
         };
         Update: {
-          created_by?: string;
-          name?: string;
           id?: string;
+          name?: string;
+          is_completed?: boolean;
+          created_by?: string;
+          created_at?: string | null;
+        };
+      };
+      retro_session_messages: {
+        Row: {
+          id: string;
+          user_id: string;
+          type: string;
+          message: string;
+          like_count: number | null;
+          created_at: string | null;
+          session_id: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          type: string;
+          message: string;
+          like_count?: number | null;
+          created_at?: string | null;
+          session_id: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          type?: string;
+          message?: string;
+          like_count?: number | null;
+          created_at?: string | null;
+          session_id?: string;
+        };
+      };
+      retro_session_actions: {
+        Row: {
+          id: string;
+          session_id: string;
+          user_id: string;
+          message: string;
+          is_completed: boolean | null;
+          created_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          session_id: string;
+          user_id: string;
+          message: string;
+          is_completed?: boolean | null;
+          created_at?: string | null;
+        };
+        Update: {
+          id?: string;
+          session_id?: string;
+          user_id?: string;
+          message?: string;
+          is_completed?: boolean | null;
           created_at?: string | null;
         };
       };
       scrum_poker_session_users: {
         Row: {
-          session_id: string;
-          user_id: string;
-          user_full_name: string;
           id: string;
           created_at: string | null;
-          vote: string | null;
-          is_voted: boolean | null;
-        };
-        Insert: {
           session_id: string;
           user_id: string;
+          vote: string | null;
+          is_voted: boolean | null;
           user_full_name: string;
+          is_active: boolean | null;
+        };
+        Insert: {
           id?: string;
           created_at?: string | null;
+          session_id: string;
+          user_id: string;
           vote?: string | null;
           is_voted?: boolean | null;
+          user_full_name: string;
+          is_active?: boolean | null;
         };
         Update: {
-          session_id?: string;
-          user_id?: string;
-          user_full_name?: string;
           id?: string;
           created_at?: string | null;
+          session_id?: string;
+          user_id?: string;
           vote?: string | null;
           is_voted?: boolean | null;
+          user_full_name?: string;
+          is_active?: boolean | null;
+        };
+      };
+      scrum_poker_session: {
+        Row: {
+          id: string;
+          created_by: string;
+          created_at: string | null;
+          name: string;
+        };
+        Insert: {
+          id?: string;
+          created_by: string;
+          created_at?: string | null;
+          name: string;
+        };
+        Update: {
+          id?: string;
+          created_by?: string;
+          created_at?: string | null;
+          name?: string;
         };
       };
     };
     Views: {
-      [_ in never]: never;
+      recent_activities: {
+        Row: {
+          session_id: string | null;
+          user_id: string | null;
+          session_name: string | null;
+          created_by: string | null;
+          type: string | null;
+          base_path: string | null;
+        };
+      };
     };
     Functions: {
       [_ in never]: never;

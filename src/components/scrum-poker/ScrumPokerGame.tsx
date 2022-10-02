@@ -36,6 +36,7 @@ const ScrumPokerGame: React.FC<ScrumPokerGameProps> = ({ sessionID }) => {
         user_id: user?.id!,
         session_id: sessionID!,
         user_full_name: profile.data?.full_name!,
+        is_active: true,
       })
       .select()
       .single();
@@ -131,10 +132,10 @@ const ScrumPokerGame: React.FC<ScrumPokerGameProps> = ({ sessionID }) => {
     if (data) setScrumMaster(data.created_by);
   };
 
-  const removeUserFromSession = async () => {
+  const setInactiveUserFromSession = async () => {
     const { error } = await supabase
       .from(ScrumPokerSessionUserTable)
-      .delete()
+      .update({ is_active: false })
       .eq("session_id", sessionID)
       .eq("user_id", user?.id);
 
@@ -176,7 +177,7 @@ const ScrumPokerGame: React.FC<ScrumPokerGameProps> = ({ sessionID }) => {
 
     return () => {
       channel.unsubscribe();
-      removeUserFromSession();
+      setInactiveUserFromSession();
     };
   }, []);
 

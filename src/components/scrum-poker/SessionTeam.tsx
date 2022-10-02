@@ -58,11 +58,7 @@ const SessionTeam: React.FC<SessionTeamProps> = ({
         // @ts-ignore
         (payload) => {
           setSessionUserVotes((current) => {
-            let currentUser = current.find((w) => w.user_id === payload.new.user_id)!;
-            currentUser.vote = payload.new.vote;
-            currentUser.is_voted = payload.new.is_voted;
-
-            return [...current.filter((w) => w.user_id !== payload.new.user_id), currentUser];
+            return [...current.filter((w) => w.user_id !== payload.new.user_id), payload.new];
           });
         }
       )
@@ -129,7 +125,7 @@ const SessionTeam: React.FC<SessionTeamProps> = ({
         .sort((a, b) => (a.user_full_name < b.user_full_name ? -1 : 1))
         .map((member, idx) => (
           <Group key={idx} position="apart">
-            <Text color={member.is_voted ? "green" : ""} weight={800}>
+            <Text color={member.is_voted ? "green" : member.is_active ? "" : "red"} weight={800}>
               <Center>
                 {member?.user_full_name}
                 {scrumMaster == member.user_id && (
