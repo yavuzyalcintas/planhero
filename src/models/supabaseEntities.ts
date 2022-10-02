@@ -26,6 +26,7 @@ export interface ScrumPokerSessionUser {
   vote?: string;
   is_voted?: boolean;
   user_full_name: string;
+  is_active?: boolean;
 }
 
 export const RetroSessionTable = "retro_session";
@@ -63,4 +64,14 @@ export enum RetroSessionMessageTypes {
   Stop = "stop",
   Continue = "continue",
   Actions = "actions",
+}
+
+export const RecentActivitiesView = "recent_activities";
+export interface RecentActivities {
+  session_id: string;
+  user_id: string;
+  session_name: string;
+  created_by: string;
+  type: string;
+  base_path: string;
 }
