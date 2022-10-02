@@ -15,7 +15,7 @@ import { useForm } from "@mantine/form";
 import { upperFirst, useToggle } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
 import { IconBrandGoogle } from "@tabler/icons";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { useQuery } from "../../hooks/useQuery";
 import { ProfilesTable } from "../../models/supabaseEntities";
@@ -39,6 +39,7 @@ export function AuthenticationForm(props: PaperProps) {
       email: (val) => (/^\S+@\S+$/.test(val) ? null : "Invalid email"),
       password: (val) => (val.length <= 6 ? "Password should include at least 6 characters" : null),
       //name: (val) => (val.length > 0 && type === "login" ? null : "Name required"),
+      terms: (val: boolean) => (val ? null : "test"),
     },
   });
 
@@ -72,9 +73,15 @@ export function AuthenticationForm(props: PaperProps) {
             color: "red",
           });
           return;
+        } else {
+          showNotification({
+            title: "Account Created",
+            message: "You must validate your email account",
+            color: "green",
+          });
         }
 
-        navigate(redirectTo || "/");
+        toggle();
       }
     }
 
@@ -175,7 +182,15 @@ export function AuthenticationForm(props: PaperProps) {
 
             {type === "register" && (
               <Checkbox
-                label="I accept terms and conditions"
+                required
+                label={
+                  <Text weight={500}>
+                    I accept{" "}
+                    <Link color={"cyan"} to="/terms" target="_blank" rel="noreferrer">
+                      terms and conditions
+                    </Link>
+                  </Text>
+                }
                 checked={form.values.terms}
                 onChange={(event) => {
                   form.setFieldValue("terms", event.currentTarget.checked);
