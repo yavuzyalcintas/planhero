@@ -1,12 +1,12 @@
 import { Container } from "@mantine/core";
 import React from "react";
 
-import ReactComponent from "../../docs/privacy.md";
+import { ReactComponent as PrivacyMD } from "../../docs/privacy.md";
 
 const PrivacyPage: React.FC = () => {
   return (
     <Container>
-      <ReactComponent />
+      <PrivacyMD />
     </Container>
   );
 };

@@ -1,12 +1,12 @@
 import { Container } from "@mantine/core";
 import React from "react";
 
-import ReactComponent from "../../docs/terms.md";
+import { ReactComponent as TermsMD } from "../../docs/terms.md";
 
 const TermsPage: React.FC = () => {
   return (
     <Container>
-      <ReactComponent />
+      <TermsMD />
     </Container>
   );
 };
