@@ -4,15 +4,19 @@ import { Route, Routes } from "react-router-dom";
 import FooterSimple from "./components/common/Footer";
 import NavbarMinimal from "./components/common/Navbar";
 import AuthGuard from "./guards/AuthGuard";
+import useAnalytics from "./hooks/useAnalytics";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
+import PrivacyPage from "./pages/PrivacyPage";
 import ProfilePage from "./pages/ProfilePage";
 import RetroHomePage from "./pages/RetroHomePage";
 import RetroPage from "./pages/RetroPage";
 import ScrumPokerHomePage from "./pages/ScrumPokerHomePage";
 import ScrumPokerPage from "./pages/ScrumPokerPage";
+import TermsPage from "./pages/TermsPage";
 
 function App() {
+  useAnalytics();
   return (
     <>
       <MantineProvider
@@ -58,7 +62,14 @@ function App() {
                 theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0],
             },
           })}
-          footer={<FooterSimple links={[{ link: "/", label: "Home" }]} />}
+          footer={
+            <FooterSimple
+              links={[
+                { link: "/privacy", label: "Privacy" },
+                { link: "/terms", label: "Terms of Service" },
+              ]}
+            />
+          }
         >
           {/* Your application here */}
 
@@ -107,6 +118,9 @@ function App() {
 
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
+
+            <Route path="/privacy" element={<PrivacyPage />} />
+            <Route path="/terms" element={<TermsPage />} />
           </Routes>
         </AppShell>
       </MantineProvider>

@@ -14,13 +14,17 @@ import {
 import { useForm } from "@mantine/form";
 import { upperFirst, useToggle } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
-import { useNavigate } from "react-router-dom";
+import { IconBrandGoogle } from "@tabler/icons";
+import { Link, useNavigate } from "react-router-dom";
 
+import { useQuery } from "../../hooks/useQuery";
 import { ProfilesTable } from "../../models/supabaseEntities";
 import { supabase } from "../../utilities/supabase";
 
 export function AuthenticationForm(props: PaperProps) {
   const navigate = useNavigate();
+  const query = useQuery();
+
   const [type, toggle] = useToggle(["login", "register"]);
 
   const form = useForm({
@@ -35,10 +39,13 @@ export function AuthenticationForm(props: PaperProps) {
       email: (val) => (/^\S+@\S+$/.test(val) ? null : "Invalid email"),
       password: (val) => (val.length <= 6 ? "Password should include at least 6 characters" : null),
       //name: (val) => (val.length > 0 && type === "login" ? null : "Name required"),
+      terms: (val: boolean) => (val ? null : "test"),
     },
   });
 
   const handleSubmit = async (values: typeof form.values) => {
+    const redirectTo = query.get("redirectTo");
+
     if (type === "register") {
       const { error, data } = await supabase.auth.signUp({
         email: values.email,
@@ -66,9 +73,15 @@ export function AuthenticationForm(props: PaperProps) {
             color: "red",
           });
           return;
+        } else {
+          showNotification({
+            title: "Account Created",
+            message: "You must validate your email account",
+            color: "green",
+          });
         }
 
-        navigate("/");
+        toggle();
       }
     }
 
@@ -87,7 +100,26 @@ export function AuthenticationForm(props: PaperProps) {
         return;
       }
 
-      navigate("/");
+      navigate(redirectTo || "/");
+    }
+  };
+
+  const googleSignIn = async () => {
+    const redirectTo = query.get("redirectTo");
+    const SITE_URL = import.meta.env.VITE_SITE_URL || "";
+
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: `${SITE_URL}${redirectTo || ""}` },
+    });
+
+    if (error) {
+      showNotification({
+        title: "Google Login Error",
+        message: error.message,
+        color: "red",
+      });
+      return;
     }
   };
 
@@ -99,7 +131,14 @@ export function AuthenticationForm(props: PaperProps) {
         </Text>
 
         <Group grow mb="md" mt="md">
-          {/* <GoogleButton radius='xl'>Google</GoogleButton> */}
+          <Button
+            leftIcon={<IconBrandGoogle />}
+            variant="default"
+            color="gray"
+            onClick={() => googleSignIn()}
+          >
+            Continue with Google
+          </Button>
         </Group>
 
         <Divider label="Or continue with email" labelPosition="center" my="lg" />
@@ -143,7 +182,15 @@ export function AuthenticationForm(props: PaperProps) {
 
             {type === "register" && (
               <Checkbox
-                label="I accept terms and conditions"
+                required
+                label={
+                  <Text weight={500}>
+                    I accept{" "}
+                    <Link color={"cyan"} to="/terms" target="_blank" rel="noreferrer">
+                      terms and conditions
+                    </Link>
+                  </Text>
+                }
                 checked={form.values.terms}
                 onChange={(event) => {
                   form.setFieldValue("terms", event.currentTarget.checked);
