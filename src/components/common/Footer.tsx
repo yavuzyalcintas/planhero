@@ -38,15 +38,7 @@ type FooterSimpleProps = {
 const FooterSimple: React.FC<FooterSimpleProps> = ({ links }: FooterSimpleProps) => {
   const { classes } = useStyles();
   const items = links.map((link) => (
-    <Anchor<"a">
-      color="dimmed"
-      key={link.label}
-      href={link.link}
-      onClick={(event) => {
-        event.preventDefault();
-      }}
-      size="sm"
-    >
+    <Anchor<"a"> color="dimmed" key={link.label} href={link.link} size="sm">
       {link.label}
     </Anchor>
   ));
