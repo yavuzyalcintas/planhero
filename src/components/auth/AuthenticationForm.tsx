@@ -1,4 +1,6 @@
-import type { PaperProps } from "@mantine/core";
+import "./auth.scss";
+
+import { Center, PaperProps } from "@mantine/core";
 import {
   Anchor,
   Button,
@@ -14,7 +16,6 @@ import {
 import { useForm } from "@mantine/form";
 import { upperFirst, useToggle } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
-import { IconBrandGoogle } from "@tabler/icons";
 import { Link, useNavigate } from "react-router-dom";
 
 import { useQuery } from "../../hooks/useQuery";
@@ -130,16 +131,20 @@ export function AuthenticationForm(props: PaperProps) {
           Welcome to PlanHero,
         </Text>
 
-        <Group grow mb="md" mt="md">
-          <Button
-            leftIcon={<IconBrandGoogle />}
-            variant="default"
-            color="gray"
-            onClick={() => googleSignIn()}
-          >
-            Continue with Google
-          </Button>
-        </Group>
+        <Center mb="md" mt="md">
+          <div className="google-btn" onClick={() => googleSignIn()}>
+            <div className="google-icon-wrapper">
+              <img
+                className="google-icon"
+                src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+                alt="Google"
+              />
+            </div>
+            <p className="btn-text">
+              <b>Sign in with Google</b>
+            </p>
+          </div>
+        </Center>
 
         <Divider label="Or continue with email" labelPosition="center" my="lg" />
 
